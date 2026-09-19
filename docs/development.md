@@ -11,9 +11,9 @@ toolchain:
   ```sh
   rustup target add wasm32-unknown-unknown
   ```
-- [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/):
+- [wasm-pack](https://wasm-bindgen.github.io/wasm-pack/installer/)
   ```sh
-  curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+  curl https://wasm-bindgen.github.io/wasm-pack/installer/init.sh -sSf | sh
   ```
 
 The compiled wasm output is already checked into `src/pitch-wasm/`, so these

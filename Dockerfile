@@ -6,7 +6,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends curl ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
     && rustup target add wasm32-unknown-unknown \
-    && curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+    && curl https://wasm-bindgen.github.io/wasm-pack/installer/init.sh -sSf | sh
 
 WORKDIR /app
 COPY pitch-wasm ./pitch-wasm

@@ -110,14 +110,19 @@ export function parseExerciseYaml(text, sourceName = 'exercise') {
  * rather than breaking the whole set.
  */
 export async function loadBuiltInExerciseSets() {
-  const res = await fetch('/exercises/manifest.json');
+  // import.meta.env.BASE_URL (Vite's configured `base`) rather than a bare
+  // leading slash — this app is deployed at a subpath on GitHub Pages
+  // project sites (e.g. /BassBuddy/), where an absolute "/exercises/..."
+  // path would resolve to the wrong (site-root) URL.
+  const base = import.meta.env.BASE_URL;
+  const res = await fetch(`${base}exercises/manifest.json`);
   if (!res.ok) return [];
   const { files } = await res.json();
 
   const sets = [];
   for (const relPath of files) {
     try {
-      const text = await (await fetch(`/exercises/${relPath}`)).text();
+      const text = await (await fetch(`${base}exercises/${relPath}`)).text();
       const slash = relPath.lastIndexOf('/');
       const baseName = slash === -1 ? relPath : relPath.slice(slash + 1);
       const folder = slash === -1 ? null : relPath.slice(0, slash);
