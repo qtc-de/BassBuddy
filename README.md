@@ -5,8 +5,12 @@
 Single-page Vue app that listens to a bass guitar through the microphone,
 detects the played note using a Rust/WebAssembly pitch detector, and shows
 where it sits on a bass fretboard. Combined with yaml-based, user modifiable
-excersise files, it is a great practice partner to familiarize yourself with
+exercise files, it is a great practice partner to familiarize yourself with
 the fretboard of your bass guitar.
+
+<img width="1030" height="640" alt="image" src="https://github.com/user-attachments/assets/41fbe425-a37b-4a9b-98d2-68b9f21a188e" />
+
+Try it out at: <https://qtc-de.github.io/BassBuddy/>
 
 
 ### Run with Docker
