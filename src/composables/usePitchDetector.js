@@ -9,7 +9,15 @@ import { DEFAULT_ALGORITHM_ID } from '../lib/algorithms.js';
 // noisy right where octave errors are most likely.
 const FFT_SIZE = 8192;
 const DETECT_INTERVAL_MS = 40; // ~25 detections/sec
-const STABLE_HITS_REQUIRED = 2; // consecutive same-note detections before UI updates
+const STABLE_HITS_REQUIRED = 2; // consecutive same-note detections before the live display updates
+// A plucked note's attack transient can briefly mistrack an octave low
+// before settling (e.g. G2 reads as G1 for the first ~1-2 detections).
+// STABLE_HITS_REQUIRED is intentionally short so the tuner/fretboard feel
+// responsive, but that means it alone isn't enough to filter out such a
+// blip — exercises watch `confirmedNote` instead, which needs the pitch to
+// hold for longer before counting, so a transient can't get scored.
+const CONFIRM_HOLD_MS = 200;
+const CONFIRM_HITS_REQUIRED = Math.ceil(CONFIRM_HOLD_MS / DETECT_INTERVAL_MS);
 const SILENCE_HOLD_MS = 250; // keep showing the last note briefly after signal drops
 
 // RMS below which a buffer is treated as silence (no pitch reported).
@@ -33,6 +41,7 @@ export function usePitchDetector() {
   const error = ref(null);
   const frequency = ref(0);
   const note = shallowRef(null);
+  const confirmedNote = shallowRef(null); // note that's held long enough to be scored by exercises
   const algorithm = ref(DEFAULT_ALGORITHM_ID);
   const noiseGate = ref(DEFAULT_NOISE_GATE);
   const gain = ref(DEFAULT_GAIN);
@@ -143,9 +152,13 @@ export function usePitchDetector() {
         frequency.value = freq;
         note.value = info;
       }
+      if (pendingHits >= CONFIRM_HITS_REQUIRED) {
+        confirmedNote.value = info;
+      }
     } else if (now - lastVoicedAt > SILENCE_HOLD_MS) {
       frequency.value = 0;
       note.value = null;
+      confirmedNote.value = null;
       pendingMidi = null;
       pendingHits = 0;
     }
@@ -176,6 +189,7 @@ export function usePitchDetector() {
       pendingMidi = null;
       pendingHits = 0;
       lastVoicedAt = 0;
+      confirmedNote.value = null;
 
       timerId = setInterval(tick, DETECT_INTERVAL_MS);
       isListening.value = true;
@@ -207,6 +221,7 @@ export function usePitchDetector() {
     isListening.value = false;
     frequency.value = 0;
     note.value = null;
+    confirmedNote.value = null;
   }
 
   return {
@@ -214,6 +229,7 @@ export function usePitchDetector() {
     error,
     frequency,
     note,
+    confirmedNote,
     algorithm,
     noiseGate,
     gain,

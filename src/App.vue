@@ -19,6 +19,7 @@ const {
   error,
   frequency,
   note,
+  confirmedNote,
   algorithm,
   noiseGate,
   gain,
@@ -33,9 +34,10 @@ const { showNoteNames } = useSettings();
 onMounted(() => exercises.loadAll());
 
 // Feed only note *onsets* (a change to a new pitch) into the exercise
-// engine — the mic composable holds `note` steady while a note sustains,
-// and re-scoring every tick of the same held note would double-count it.
-watch(note, (newNote, oldNote) => {
+// engine — watching confirmedNote (not the faster-updating `note`, used
+// for the live display) so a brief attack-transient octave blip can't get
+// scored before the pitch actually settles.
+watch(confirmedNote, (newNote, oldNote) => {
   if (newNote && (!oldNote || oldNote.midi !== newNote.midi)) {
     exercises.handleNoteOnset(newNote);
   }
