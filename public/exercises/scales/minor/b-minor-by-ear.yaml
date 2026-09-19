@@ -2,98 +2,19 @@ bassbuddy:
   name: B Minor By Ear
   ordered: true
   exercises:
-    - name: Ear Training 1
+    - name: Random Ear Training
       mode: hear
+      ordered: true
+      randomNotes: 4
       description: >-
         These notes are all from the B natural minor scale. It starts on
-        B. Work out the rest by ear and play them back in order.
-      ordered: true
+        {{note}}. Work out the rest by ear and play them back in order.
+        Restart for a new random set.
       notes:
         - B
         - C#
         - D
-        - G
-
-    - name: Ear Training 2
-      mode: hear
-      description: >-
-        These notes are all from the B natural minor scale. It starts on
-        C#. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - C#
-        - G
-        - F#
-        - D
-
-    - name: Ear Training 3
-      mode: hear
-      description: >-
-        These notes are all from the B natural minor scale. It starts on
-        E. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
         - E
-        - B
-        - F#
-        - B
-
-    - name: Ear Training 4
-      mode: hear
-      description: >-
-        These notes are all from the B natural minor scale. It starts on
-        D. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - D
-        - B
-        - A
-        - F#
-
-    - name: Ear Training 5
-      mode: hear
-      description: >-
-        These notes are all from the B natural minor scale. It starts on
-        E. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - E
-        - A
-        - B
-        - D
-
-    - name: Ear Training 6
-      mode: hear
-      description: >-
-        These notes are all from the B natural minor scale. It starts on
-        A. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - A
-        - D
-        - A
-        - C#
-
-    - name: Ear Training 7
-      mode: hear
-      description: >-
-        These notes are all from the B natural minor scale. It starts on
-        B. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - B
-        - G
-        - C#
-        - E
-
-    - name: Ear Training 8
-      mode: hear
-      description: >-
-        These notes are all from the B natural minor scale. It starts on
-        F#. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
         - F#
         - G
-        - D
-        - B
+        - A

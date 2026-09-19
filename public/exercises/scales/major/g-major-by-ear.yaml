@@ -2,98 +2,19 @@ bassbuddy:
   name: G Major By Ear
   ordered: true
   exercises:
-    - name: Ear Training 1
+    - name: Random Ear Training
       mode: hear
-      description: >-
-        These notes are all from the G major scale. It starts on
-        A. Work out the rest by ear and play them back in order.
       ordered: true
+      randomNotes: 4
+      description: >-
+        These notes are all from the G major scale. It starts on {{note}}.
+        Work out the rest by ear and play them back in order. Restart for
+        a new random set.
       notes:
-        - A
         - G
-        - E
-        - D
-
-    - name: Ear Training 2
-      mode: hear
-      description: >-
-        These notes are all from the G major scale. It starts on
-        E. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - E
-        - B
-        - C
-        - F#
-
-    - name: Ear Training 3
-      mode: hear
-      description: >-
-        These notes are all from the G major scale. It starts on
-        A. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - A
-        - C
-        - E
-        - F#
-
-    - name: Ear Training 4
-      mode: hear
-      description: >-
-        These notes are all from the G major scale. It starts on
-        B. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - B
-        - F#
-        - C
-        - G
-
-    - name: Ear Training 5
-      mode: hear
-      description: >-
-        These notes are all from the G major scale. It starts on
-        C. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - C
-        - A
-        - G
-        - E
-
-    - name: Ear Training 6
-      mode: hear
-      description: >-
-        These notes are all from the G major scale. It starts on
-        A. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
         - A
         - B
-        - D
-        - B
-
-    - name: Ear Training 7
-      mode: hear
-      description: >-
-        These notes are all from the G major scale. It starts on
-        F#. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - F#
-        - B
         - C
-        - G
-
-    - name: Ear Training 8
-      mode: hear
-      description: >-
-        These notes are all from the G major scale. It starts on
-        D. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
         - D
+        - E
         - F#
-        - D
-        - G

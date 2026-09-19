@@ -1,15 +1,32 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import Fretboard from './components/Fretboard.vue';
-import { usePitchDetector, MIN_NOISE_GATE, MAX_NOISE_GATE } from './composables/usePitchDetector.js';
+import {
+  usePitchDetector,
+  MIN_NOISE_GATE,
+  MAX_NOISE_GATE,
+  MIN_GAIN,
+  MAX_GAIN,
+} from './composables/usePitchDetector.js';
 import { useExercises } from './composables/useExercises.js';
 import { useSettings } from './composables/useSettings.js';
 import { ALGORITHMS } from './lib/algorithms.js';
 import { canonicalFreqForPitchClass } from './lib/notes.js';
 import { playFrequencies } from './lib/synth.js';
 
-const { isListening, error, frequency, note, algorithm, noiseGate, inputDevices, selectedDeviceId, start, stop } =
-  usePitchDetector();
+const {
+  isListening,
+  error,
+  frequency,
+  note,
+  algorithm,
+  noiseGate,
+  gain,
+  inputDevices,
+  selectedDeviceId,
+  start,
+  stop,
+} = usePitchDetector();
 const exercises = useExercises();
 const { showNoteNames } = useSettings();
 
@@ -142,7 +159,7 @@ function toggleListening() {
         <span>Show note names</span>
       </label>
 
-      <label class="noise-gate-slider" title="Raise to ignore quiet string noise; lower to catch soft notes.">
+      <label class="range-slider" title="Raise to ignore quiet string noise; lower to catch soft notes.">
         <span>Noise Gate</span>
         <input
           type="range"
@@ -151,7 +168,16 @@ function toggleListening() {
           step="0.001"
           v-model.number="noiseGate"
         />
-        <span class="noise-gate-value">{{ noiseGate.toFixed(3) }}</span>
+        <span class="range-value">{{ noiseGate.toFixed(3) }}</span>
+      </label>
+
+      <label
+        class="range-slider"
+        title="Digitally boosts a weak input (phone mic, low-output interfaces) before detection. Too much amplifies background noise too."
+      >
+        <span>Gain</span>
+        <input type="range" :min="MIN_GAIN" :max="MAX_GAIN" step="0.5" v-model.number="gain" />
+        <span class="range-value">×{{ gain.toFixed(1) }}</span>
       </label>
     </div>
 
@@ -437,7 +463,7 @@ h1 {
   cursor: pointer;
 }
 
-.noise-gate-slider {
+.range-slider {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -445,13 +471,13 @@ h1 {
   color: #a89f8f;
 }
 
-.noise-gate-slider input[type='range'] {
+.range-slider input[type='range'] {
   width: 7rem;
   accent-color: #ff5a3c;
   cursor: pointer;
 }
 
-.noise-gate-value {
+.range-value {
   min-width: 3ch;
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;

@@ -19,6 +19,15 @@ export const DEFAULT_NOISE_GATE = 0.02;
 export const MIN_NOISE_GATE = 0.001;
 export const MAX_NOISE_GATE = 0.03;
 
+// Digital input gain, applied to samples before the noise gate and pitch
+// detection see them. The noise gate can only make detection *more*
+// conservative (reject more as silence) — it can't compensate for a
+// source that's just genuinely quiet (phone mics, low-output interfaces
+// like a Rocksmith cable). Gain fixes that by boosting the signal itself.
+export const DEFAULT_GAIN = 1;
+export const MIN_GAIN = 1;
+export const MAX_GAIN = 20;
+
 export function usePitchDetector() {
   const isListening = ref(false);
   const error = ref(null);
@@ -26,6 +35,7 @@ export function usePitchDetector() {
   const note = shallowRef(null);
   const algorithm = ref(DEFAULT_ALGORITHM_ID);
   const noiseGate = ref(DEFAULT_NOISE_GATE);
+  const gain = ref(DEFAULT_GAIN);
   const inputDevices = shallowRef([]); // [{ deviceId, label }], audio-input kind only
   const selectedDeviceId = ref(''); // '' = let the browser pick the default
 
@@ -87,8 +97,17 @@ export function usePitchDetector() {
     }
   });
 
+  function applyGain(buf, factor) {
+    if (factor === 1) return;
+    for (let i = 0; i < buf.length; i++) {
+      const v = buf[i] * factor;
+      buf[i] = v > 1 ? 1 : v < -1 ? -1 : v;
+    }
+  }
+
   function tick() {
     analyser.getFloatTimeDomainData(buffer);
+    applyGain(buffer, gain.value);
     const freq = detect_pitch(algorithm.value, buffer, audioCtx.sampleRate, noiseGate.value);
     const now = performance.now();
 
@@ -180,6 +199,7 @@ export function usePitchDetector() {
     note,
     algorithm,
     noiseGate,
+    gain,
     inputDevices,
     selectedDeviceId,
     start,

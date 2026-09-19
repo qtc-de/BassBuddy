@@ -2,98 +2,17 @@ bassbuddy:
   name: C Major Pentatonic By Ear
   ordered: true
   exercises:
-    - name: Ear Training 1
+    - name: Random Ear Training
       mode: hear
-      description: >-
-        These notes are all from the C major pentatonic scale. It starts on
-        C. Work out the rest by ear and play them back in order.
       ordered: true
+      randomNotes: 4
+      description: >-
+        These notes are all from the C major pentatonic scale. It starts
+        on {{note}}. Work out the rest by ear and play them back in
+        order. Restart for a new random set.
       notes:
         - C
-        - G
-        - C
-        - E
-
-    - name: Ear Training 2
-      mode: hear
-      description: >-
-        These notes are all from the C major pentatonic scale. It starts on
-        E. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - E
-        - A
         - D
         - E
-
-    - name: Ear Training 3
-      mode: hear
-      description: >-
-        These notes are all from the C major pentatonic scale. It starts on
-        E. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - E
-        - C
-        - G
-        - E
-
-    - name: Ear Training 4
-      mode: hear
-      description: >-
-        These notes are all from the C major pentatonic scale. It starts on
-        G. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
         - G
         - A
-        - G
-        - D
-
-    - name: Ear Training 5
-      mode: hear
-      description: >-
-        These notes are all from the C major pentatonic scale. It starts on
-        C. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - C
-        - D
-        - E
-        - C
-
-    - name: Ear Training 6
-      mode: hear
-      description: >-
-        These notes are all from the C major pentatonic scale. It starts on
-        G. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - G
-        - E
-        - G
-        - D
-
-    - name: Ear Training 7
-      mode: hear
-      description: >-
-        These notes are all from the C major pentatonic scale. It starts on
-        G. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - G
-        - D
-        - E
-        - D
-
-    - name: Ear Training 8
-      mode: hear
-      description: >-
-        These notes are all from the C major pentatonic scale. It starts on
-        E. Work out the rest by ear and play them back in order.
-      ordered: true
-      notes:
-        - E
-        - A
-        - G
-        - D

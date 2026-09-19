@@ -6,7 +6,7 @@ import {
   parseExerciseYaml,
   UPLOADED_FOLDER,
 } from '../lib/exercises.js';
-import { findFretPositionsForPitchClass } from '../lib/notes.js';
+import { findFretPositions, findFretPositionsForPitchClass } from '../lib/notes.js';
 
 const WRONG_MARKER_TTL_MS = 700;
 const AUTO_ADVANCE_DELAY_MS = 2000; // time to see "exercise complete" before moving on
@@ -85,7 +85,14 @@ export function useExercises() {
   const currentExercise = computed(() => {
     const raw = rawExercise.value;
     if (!raw) return null;
-    return raw.randomCount ? { ...raw, notes: randomizedNotes.value } : raw;
+    if (!raw.randomCount) return raw;
+    // {{note}} in the description is substituted with the actual first
+    // note of this attempt's random draw — the only way a static YAML
+    // description can correctly name "the starting note" when the real
+    // sequence is generated fresh every time (see randomNotesFrom).
+    const first = randomizedNotes.value[0];
+    const description = first != null ? raw.description.replaceAll('{{note}}', first) : raw.description;
+    return { ...raw, notes: randomizedNotes.value, description };
   });
 
   const activeFrets = computed(() => currentExercise.value?.fretboard?.frets ?? null);
@@ -166,26 +173,33 @@ export function useExercises() {
   // Only mark positions within the exercise's relevant fretboard section
   // (if it has one) — a correct/wrong note shouldn't light up a dimmed,
   // out-of-scope fret just because the same pitch class also lives there.
-  // Matched by pitch class (any octave), not the exact octave played: a
-  // note scores correct regardless of octave, so restricting the
-  // highlight to only that one specific octave's positions could leave a
-  // correctly-scored note with nowhere valid to show inside a narrow
-  // fretboard window.
-  function relevantPositions(name) {
+  //
+  // Prefer the EXACT octave actually played (e.g. playing G2 highlights
+  // only G2, not G1 too, even if both sit inside the active window — one
+  // fret window can span more than an octave across the 4 strings since
+  // each is tuned a fourth apart). Only fall back to matching the pitch
+  // class in any octave if that exact octave has no position at all
+  // inside the window — otherwise a correctly-scored note could end up
+  // with nowhere valid to show.
+  function relevantPositions(midi, name) {
     const frets = activeFrets.value;
-    const positions = findFretPositionsForPitchClass(name);
-    return frets == null ? positions : positions.filter((p) => frets.has(p.fret));
+    const exact = findFretPositions(midi);
+    const exactInWindow = frets == null ? exact : exact.filter((p) => frets.has(p.fret));
+    if (exactInWindow.length > 0) return exactInWindow;
+
+    const anyOctave = findFretPositionsForPitchClass(name);
+    return frets == null ? anyOctave : anyOctave.filter((p) => frets.has(p.fret));
   }
 
-  function markCorrect(name) {
+  function markCorrect(midi, name) {
     const next = new Set(correctPositions.value);
-    for (const p of relevantPositions(name)) next.add(`${p.stringIndex}-${p.fret}`);
+    for (const p of relevantPositions(midi, name)) next.add(`${p.stringIndex}-${p.fret}`);
     correctPositions.value = next;
   }
 
-  function markWrong(name) {
+  function markWrong(midi, name) {
     const id = ++wrongMarkerSeq;
-    const newMarkers = relevantPositions(name).map((p) => ({ id, stringIndex: p.stringIndex, fret: p.fret }));
+    const newMarkers = relevantPositions(midi, name).map((p) => ({ id, stringIndex: p.stringIndex, fret: p.fret }));
     wrongMarkers.value = [...wrongMarkers.value, ...newMarkers];
     setTimeout(() => {
       wrongMarkers.value = wrongMarkers.value.filter((m) => m.id !== id);
@@ -201,11 +215,11 @@ export function useExercises() {
     if (exercise.ordered) {
       const expected = exercise.notes[sequenceIndex.value];
       if (noteInfo.name === expected) {
-        markCorrect(noteInfo.name);
+        markCorrect(noteInfo.midi, noteInfo.name);
         sequenceIndex.value += 1;
         justCompleted = sequenceIndex.value >= exercise.notes.length;
       } else {
-        markWrong(noteInfo.name);
+        markWrong(noteInfo.midi, noteInfo.name);
       }
     } else {
       const remaining = remainingCounts.value.get(noteInfo.name) || 0;
@@ -213,10 +227,10 @@ export function useExercises() {
         const counts = new Map(remainingCounts.value);
         counts.set(noteInfo.name, remaining - 1);
         remainingCounts.value = counts;
-        markCorrect(noteInfo.name);
+        markCorrect(noteInfo.midi, noteInfo.name);
         justCompleted = [...counts.values()].every((c) => c === 0);
       } else {
-        markWrong(noteInfo.name);
+        markWrong(noteInfo.midi, noteInfo.name);
       }
     }
 
