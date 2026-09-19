@@ -1,0 +1,99 @@
+bassbuddy:
+  name: C Major By Ear
+  ordered: true
+  exercises:
+    - name: Ear Training 1
+      mode: hear
+      description: >-
+        These notes are all from the C major scale. It starts on
+        F. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - F
+        - D
+        - G
+        - D
+
+    - name: Ear Training 2
+      mode: hear
+      description: >-
+        These notes are all from the C major scale. It starts on
+        F. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - F
+        - A
+        - C
+        - D
+
+    - name: Ear Training 3
+      mode: hear
+      description: >-
+        These notes are all from the C major scale. It starts on
+        C. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - C
+        - G
+        - D
+        - E
+
+    - name: Ear Training 4
+      mode: hear
+      description: >-
+        These notes are all from the C major scale. It starts on
+        A. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - A
+        - G
+        - D
+        - F
+
+    - name: Ear Training 5
+      mode: hear
+      description: >-
+        These notes are all from the C major scale. It starts on
+        B. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - B
+        - F
+        - D
+        - A
+
+    - name: Ear Training 6
+      mode: hear
+      description: >-
+        These notes are all from the C major scale. It starts on
+        G. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - G
+        - F
+        - D
+        - F
+
+    - name: Ear Training 7
+      mode: hear
+      description: >-
+        These notes are all from the C major scale. It starts on
+        E. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - E
+        - D
+        - C
+        - E
+
+    - name: Ear Training 8
+      mode: hear
+      description: >-
+        These notes are all from the C major scale. It starts on
+        D. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - D
+        - G
+        - E
+        - B

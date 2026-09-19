@@ -1,0 +1,99 @@
+bassbuddy:
+  name: B Minor Pentatonic By Ear
+  ordered: true
+  exercises:
+    - name: Ear Training 1
+      mode: hear
+      description: >-
+        These notes are all from the B minor pentatonic scale. It starts on
+        A. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - A
+        - B
+        - A
+        - F#
+
+    - name: Ear Training 2
+      mode: hear
+      description: >-
+        These notes are all from the B minor pentatonic scale. It starts on
+        E. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - E
+        - B
+        - A
+        - E
+
+    - name: Ear Training 3
+      mode: hear
+      description: >-
+        These notes are all from the B minor pentatonic scale. It starts on
+        E. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - E
+        - D
+        - F#
+        - B
+
+    - name: Ear Training 4
+      mode: hear
+      description: >-
+        These notes are all from the B minor pentatonic scale. It starts on
+        A. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - A
+        - F#
+        - E
+        - A
+
+    - name: Ear Training 5
+      mode: hear
+      description: >-
+        These notes are all from the B minor pentatonic scale. It starts on
+        E. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - E
+        - A
+        - B
+        - F#
+
+    - name: Ear Training 6
+      mode: hear
+      description: >-
+        These notes are all from the B minor pentatonic scale. It starts on
+        D. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - D
+        - E
+        - B
+        - D
+
+    - name: Ear Training 7
+      mode: hear
+      description: >-
+        These notes are all from the B minor pentatonic scale. It starts on
+        E. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - E
+        - F#
+        - A
+        - F#
+
+    - name: Ear Training 8
+      mode: hear
+      description: >-
+        These notes are all from the B minor pentatonic scale. It starts on
+        A. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - A
+        - D
+        - B
+        - E

@@ -1,0 +1,50 @@
+bassbuddy:
+  name: Fretboard Zones
+  ordered: true
+  exercises:
+    - name: Open Position (Frets 0-4)
+      description: >-
+        Find 10 random notes within the first four frets. Every attempt
+        draws a fresh set — restart the exercise any time for a new one.
+      fretboard:
+        start: 0
+        end: 4
+      ordered: true
+      randomNotes: 10
+
+    - name: Low-Mid Position (Frets 3-7)
+      description: >-
+        Same drill, one position up the neck — find 10 random notes
+        within frets 3 through 7. Restart for a new random set.
+      fretboard:
+        start: 3
+        end: 7
+      ordered: true
+      randomNotes: 10
+
+    - name: Mid Position (Frets 6-10)
+      description: >-
+        Keep climbing — find 10 random notes within frets 6 through 10.
+        Restart for a new random set.
+      fretboard:
+        start: 6
+        end: 10
+      ordered: true
+      randomNotes: 10
+
+    - name: High Position (Frets 9-13)
+      description: >-
+        Up near the body now — find 10 random notes within frets 9
+        through 13. Restart for a new random set.
+      fretboard:
+        start: 9
+        end: 13
+      ordered: true
+      randomNotes: 10
+
+    - name: Full Neck Challenge
+      description: >-
+        No zone this time — find 10 random notes anywhere on the neck.
+        Restart for a new random set.
+      ordered: true
+      randomNotes: 10

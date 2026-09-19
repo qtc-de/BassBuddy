@@ -1,0 +1,99 @@
+bassbuddy:
+  name: C Major Scale Positions
+  ordered: true
+  exercises:
+    - name: Position 1 - Scale Shape (root C)
+      description: >-
+        Position 1 covers frets 2-6. Play the C major scale in order, starting from the root (C).
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - C
+        - D
+        - E
+        - F
+        - G
+        - A
+        - B
+
+    - name: Position 2 - Scale Shape (root D)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the scale in order, starting from its 2nd degree (D) instead of the root.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - D
+        - E
+        - F
+        - G
+        - A
+        - B
+        - C
+
+    - name: Position 3 - Scale Shape (root E)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the scale in order, starting from its 3rd degree (E) instead of the root.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - E
+        - F
+        - G
+        - A
+        - B
+        - C
+        - D
+
+    - name: Position 4 - Scale Shape (root F)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the scale in order, starting from its 4th degree (F) instead of the root.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - F
+        - G
+        - A
+        - B
+        - C
+        - D
+        - E
+
+    - name: Position 5 - Scale Shape (root G)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the scale in order, starting from its 5th degree (G) instead of the root.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - G
+        - A
+        - B
+        - C
+        - D
+        - E
+        - F
+
+    - name: Position 6 - Scale Shape (root A)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the scale in order, starting from its 6th degree (A) instead of the root.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - A
+        - B
+        - C
+        - D
+        - E
+        - F
+        - G

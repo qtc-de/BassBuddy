@@ -1,0 +1,73 @@
+bassbuddy:
+  name: B Minor Pentatonic Positions
+  ordered: true
+  exercises:
+    - name: Position 1 - Scale Shape (root B)
+      description: >-
+        The minor pentatonic drops the 2nd and 6th from the natural minor scale — the classic bass/blues/rock scale. Position 1 covers frets 1-5. Play it in order, starting from the root (B).
+      fretboard:
+        start: 1
+        end: 5
+      ordered: true
+      notes:
+        - B
+        - D
+        - E
+        - F#
+        - A
+
+    - name: Position 2 - Scale Shape (root D)
+      description: >-
+        Same frets (1-5) as Position 1 — only the starting note changes. Play the same five notes in order, starting from D.
+      fretboard:
+        start: 1
+        end: 5
+      ordered: true
+      notes:
+        - D
+        - E
+        - F#
+        - A
+        - B
+
+    - name: Position 3 - Scale Shape (root E)
+      description: >-
+        Same frets (1-5) as Position 1 — only the starting note changes. Play the same five notes in order, starting from E.
+      fretboard:
+        start: 1
+        end: 5
+      ordered: true
+      notes:
+        - E
+        - F#
+        - A
+        - B
+        - D
+
+    - name: Position 4 - Scale Shape (root F#)
+      description: >-
+        Same frets (1-5) as Position 1 — only the starting note changes. Play the same five notes in order, starting from F#.
+      fretboard:
+        start: 1
+        end: 5
+      ordered: true
+      notes:
+        - F#
+        - A
+        - B
+        - D
+        - E
+
+    - name: Position 5 - Scale Shape (root A)
+      description: >-
+        Same frets (1-5) as Position 1 — only the starting note changes. Play the same five notes in order, starting from A.
+      fretboard:
+        start: 1
+        end: 5
+      ordered: true
+      notes:
+        - A
+        - B
+        - D
+        - E
+        - F#

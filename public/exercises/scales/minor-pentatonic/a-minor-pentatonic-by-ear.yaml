@@ -1,0 +1,99 @@
+bassbuddy:
+  name: A Minor Pentatonic By Ear
+  ordered: true
+  exercises:
+    - name: Ear Training 1
+      mode: hear
+      description: >-
+        These notes are all from the A minor pentatonic scale. It starts on
+        E. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - E
+        - A
+        - E
+        - D
+
+    - name: Ear Training 2
+      mode: hear
+      description: >-
+        These notes are all from the A minor pentatonic scale. It starts on
+        C. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - C
+        - G
+        - A
+        - C
+
+    - name: Ear Training 3
+      mode: hear
+      description: >-
+        These notes are all from the A minor pentatonic scale. It starts on
+        G. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - G
+        - C
+        - G
+        - A
+
+    - name: Ear Training 4
+      mode: hear
+      description: >-
+        These notes are all from the A minor pentatonic scale. It starts on
+        D. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - D
+        - G
+        - C
+        - E
+
+    - name: Ear Training 5
+      mode: hear
+      description: >-
+        These notes are all from the A minor pentatonic scale. It starts on
+        G. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - G
+        - D
+        - C
+        - D
+
+    - name: Ear Training 6
+      mode: hear
+      description: >-
+        These notes are all from the A minor pentatonic scale. It starts on
+        A. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - A
+        - G
+        - E
+        - C
+
+    - name: Ear Training 7
+      mode: hear
+      description: >-
+        These notes are all from the A minor pentatonic scale. It starts on
+        C. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - C
+        - A
+        - E
+        - G
+
+    - name: Ear Training 8
+      mode: hear
+      description: >-
+        These notes are all from the A minor pentatonic scale. It starts on
+        C. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - C
+        - G
+        - E
+        - G

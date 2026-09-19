@@ -1,0 +1,99 @@
+bassbuddy:
+  name: D Major By Ear
+  ordered: true
+  exercises:
+    - name: Ear Training 1
+      mode: hear
+      description: >-
+        These notes are all from the D major scale. It starts on
+        C#. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - C#
+        - F#
+        - A
+        - F#
+
+    - name: Ear Training 2
+      mode: hear
+      description: >-
+        These notes are all from the D major scale. It starts on
+        C#. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - C#
+        - A
+        - B
+        - A
+
+    - name: Ear Training 3
+      mode: hear
+      description: >-
+        These notes are all from the D major scale. It starts on
+        F#. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - F#
+        - B
+        - F#
+        - E
+
+    - name: Ear Training 4
+      mode: hear
+      description: >-
+        These notes are all from the D major scale. It starts on
+        E. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - E
+        - C#
+        - B
+        - A
+
+    - name: Ear Training 5
+      mode: hear
+      description: >-
+        These notes are all from the D major scale. It starts on
+        A. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - A
+        - D
+        - G
+        - A
+
+    - name: Ear Training 6
+      mode: hear
+      description: >-
+        These notes are all from the D major scale. It starts on
+        E. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - E
+        - B
+        - F#
+        - G
+
+    - name: Ear Training 7
+      mode: hear
+      description: >-
+        These notes are all from the D major scale. It starts on
+        A. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - A
+        - C#
+        - D
+        - F#
+
+    - name: Ear Training 8
+      mode: hear
+      description: >-
+        These notes are all from the D major scale. It starts on
+        G. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - G
+        - B
+        - D
+        - C#

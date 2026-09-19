@@ -1,0 +1,23 @@
+{
+  "name": "bassbuddy",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/generate-exercise-manifest.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/generate-exercise-manifest.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:wasm": "wasm-pack build pitch-wasm --target web --out-dir ../src/pitch-wasm",
+    "exercises:manifest": "node scripts/generate-exercise-manifest.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^5.4.2",
+    "vue": "^3.5.42"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.3.0"
+  }
+}

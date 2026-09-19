@@ -1,0 +1,99 @@
+bassbuddy:
+  name: A Minor By Ear
+  ordered: true
+  exercises:
+    - name: Ear Training 1
+      mode: hear
+      description: >-
+        These notes are all from the A natural minor scale. It starts on
+        A. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - A
+        - E
+        - C
+        - A
+
+    - name: Ear Training 2
+      mode: hear
+      description: >-
+        These notes are all from the A natural minor scale. It starts on
+        D. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - D
+        - G
+        - B
+        - D
+
+    - name: Ear Training 3
+      mode: hear
+      description: >-
+        These notes are all from the A natural minor scale. It starts on
+        G. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - G
+        - E
+        - A
+        - E
+
+    - name: Ear Training 4
+      mode: hear
+      description: >-
+        These notes are all from the A natural minor scale. It starts on
+        G. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - G
+        - C
+        - G
+        - A
+
+    - name: Ear Training 5
+      mode: hear
+      description: >-
+        These notes are all from the A natural minor scale. It starts on
+        F. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - F
+        - C
+        - F
+        - B
+
+    - name: Ear Training 6
+      mode: hear
+      description: >-
+        These notes are all from the A natural minor scale. It starts on
+        C. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - C
+        - E
+        - F
+        - G
+
+    - name: Ear Training 7
+      mode: hear
+      description: >-
+        These notes are all from the A natural minor scale. It starts on
+        G. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - G
+        - B
+        - E
+        - C
+
+    - name: Ear Training 8
+      mode: hear
+      description: >-
+        These notes are all from the A natural minor scale. It starts on
+        B. Work out the rest by ear and play them back in order.
+      ordered: true
+      notes:
+        - B
+        - D
+        - F
+        - D

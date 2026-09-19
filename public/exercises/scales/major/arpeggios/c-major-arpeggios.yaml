@@ -1,0 +1,165 @@
+bassbuddy:
+  name: C Major Arpeggios
+  ordered: true
+  exercises:
+    - name: Position 1 - I Arpeggio (C major)
+      description: >-
+        This position's diatonic arpeggio, built on the root, is C major
+        (I): C - E - G. Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - C
+        - E
+        - G
+
+    - name: Position 1 - Imaj7 Arpeggio (C major 7)
+      description: >-
+        Extend the root triad to a seventh chord: Cmaj7 (Imaj7):
+        C - E - G - B. Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - C
+        - E
+        - G
+        - B
+
+    - name: Position 2 - ii Arpeggio (D minor)
+      description: >-
+        This position's diatonic arpeggio is D minor (ii): D - F - A.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - D
+        - F
+        - A
+
+    - name: Position 2 - ii7 Arpeggio (D minor 7)
+      description: >-
+        Extend it to a seventh chord: Dm7 (ii7): D - F - A - C.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - D
+        - F
+        - A
+        - C
+
+    - name: Position 3 - iii Arpeggio (E minor)
+      description: >-
+        This position's diatonic arpeggio is E minor (iii): E - G - B.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - E
+        - G
+        - B
+
+    - name: Position 3 - iii7 Arpeggio (E minor 7)
+      description: >-
+        Extend it to a seventh chord: Em7 (iii7): E - G - B - D.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - E
+        - G
+        - B
+        - D
+
+    - name: Position 4 - IV Arpeggio (F major)
+      description: >-
+        This position's diatonic arpeggio is F major (IV): F - A - C.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - F
+        - A
+        - C
+
+    - name: Position 4 - IVmaj7 Arpeggio (F major 7)
+      description: >-
+        Extend it to a seventh chord: Fmaj7 (IVmaj7): F - A - C - E.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - F
+        - A
+        - C
+        - E
+
+    - name: Position 5 - V Arpeggio (G major)
+      description: >-
+        This position's diatonic arpeggio is G major (V): G - B - D.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - G
+        - B
+        - D
+
+    - name: Position 5 - V7 Arpeggio (G dominant 7)
+      description: >-
+        Extend it to a seventh chord: G7 (V7), the dominant chord that
+        wants to resolve back to C: G - B - D - F. Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - G
+        - B
+        - D
+        - F
+
+    - name: Position 6 - vi Arpeggio (A minor)
+      description: >-
+        This position's diatonic arpeggio is A minor (vi): A - C - E.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - A
+        - C
+        - E
+
+    - name: Position 6 - vi7 Arpeggio (A minor 7)
+      description: >-
+        Extend it to a seventh chord: Am7 (vi7): A - C - E - G.
+        Play it in order.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - A
+        - C
+        - E
+        - G

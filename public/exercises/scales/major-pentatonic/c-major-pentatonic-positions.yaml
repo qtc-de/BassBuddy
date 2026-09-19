@@ -1,0 +1,73 @@
+bassbuddy:
+  name: C Major Pentatonic Positions
+  ordered: true
+  exercises:
+    - name: Position 1 - Scale Shape (root C)
+      description: >-
+        The major pentatonic drops the 4th and 7th from the major scale, leaving five notes with no half-steps between them — nothing ever sounds "wrong". Position 1 covers frets 2-6. Play it in order, starting from the root (C).
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - C
+        - D
+        - E
+        - G
+        - A
+
+    - name: Position 2 - Scale Shape (root D)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the same five notes in order, starting from D.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - D
+        - E
+        - G
+        - A
+        - C
+
+    - name: Position 3 - Scale Shape (root E)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the same five notes in order, starting from E.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - E
+        - G
+        - A
+        - C
+        - D
+
+    - name: Position 4 - Scale Shape (root G)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the same five notes in order, starting from G.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - G
+        - A
+        - C
+        - D
+        - E
+
+    - name: Position 5 - Scale Shape (root A)
+      description: >-
+        Same frets (2-6) as Position 1 — only the starting note changes. Play the same five notes in order, starting from A.
+      fretboard:
+        start: 2
+        end: 6
+      ordered: true
+      notes:
+        - A
+        - C
+        - D
+        - E
+        - G
