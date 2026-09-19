@@ -8,7 +8,8 @@ import { ALGORITHMS } from './lib/algorithms.js';
 import { canonicalFreqForPitchClass } from './lib/notes.js';
 import { playFrequencies } from './lib/synth.js';
 
-const { isListening, error, frequency, note, algorithm, noiseGate, start, stop } = usePitchDetector();
+const { isListening, error, frequency, note, algorithm, noiseGate, inputDevices, selectedDeviceId, start, stop } =
+  usePitchDetector();
 const exercises = useExercises();
 const { showNoteNames } = useSettings();
 
@@ -118,6 +119,16 @@ function toggleListening() {
       <button class="mic-button" :class="{ active: isListening }" @click="toggleListening">
         {{ isListening ? 'Stop Listening' : 'Start Listening' }}
       </button>
+
+      <label v-if="inputDevices.length > 1" class="algo-select">
+        <span>Microphone</span>
+        <select v-model="selectedDeviceId">
+          <option value="">Default</option>
+          <option v-for="device in inputDevices" :key="device.deviceId" :value="device.deviceId">
+            {{ device.label }}
+          </option>
+        </select>
+      </label>
 
       <label class="algo-select">
         <span>Algorithm</span>

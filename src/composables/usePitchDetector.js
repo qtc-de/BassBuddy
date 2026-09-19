@@ -1,4 +1,4 @@
-import { ref, shallowRef } from 'vue';
+import { ref, shallowRef, onMounted, onUnmounted, watch } from 'vue';
 import init, { detect_pitch } from '../pitch-wasm/pitch_wasm.js';
 import { analyzeFrequency } from '../lib/notes.js';
 import { DEFAULT_ALGORITHM_ID } from '../lib/algorithms.js';
@@ -26,6 +26,8 @@ export function usePitchDetector() {
   const note = shallowRef(null);
   const algorithm = ref(DEFAULT_ALGORITHM_ID);
   const noiseGate = ref(DEFAULT_NOISE_GATE);
+  const inputDevices = shallowRef([]); // [{ deviceId, label }], audio-input kind only
+  const selectedDeviceId = ref(''); // '' = let the browser pick the default
 
   let audioCtx = null;
   let analyser = null;
@@ -45,6 +47,45 @@ export function usePitchDetector() {
       wasmReady = true;
     }
   }
+
+  // Device labels are only populated once mic permission has been granted
+  // at least once; call this again after getUserMedia succeeds to fill
+  // them in, and on 'devicechange' so plugging/unplugging an interface
+  // updates the list live.
+  async function refreshDevices() {
+    if (!navigator.mediaDevices?.enumerateDevices) return;
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      inputDevices.value = devices
+        .filter((d) => d.kind === 'audioinput')
+        .map((d, i) => ({ deviceId: d.deviceId, label: d.label || `Microphone ${i + 1}` }));
+    } catch {
+      // Enumeration failing (unsupported browser, etc.) just means no
+      // device picker — the default getUserMedia behavior still works.
+    }
+  }
+
+  function handleDeviceChange() {
+    refreshDevices();
+  }
+
+  onMounted(() => {
+    refreshDevices();
+    navigator.mediaDevices?.addEventListener?.('devicechange', handleDeviceChange);
+  });
+
+  onUnmounted(() => {
+    navigator.mediaDevices?.removeEventListener?.('devicechange', handleDeviceChange);
+  });
+
+  // Switching microphones while already listening restarts the stream
+  // with the new device instead of silently continuing to read the old one.
+  watch(selectedDeviceId, () => {
+    if (isListening.value) {
+      stop();
+      start();
+    }
+  });
 
   function tick() {
     analyser.getFloatTimeDomainData(buffer);
@@ -84,8 +125,10 @@ export function usePitchDetector() {
           echoCancellation: false,
           noiseSuppression: false,
           autoGainControl: false,
+          ...(selectedDeviceId.value ? { deviceId: { exact: selectedDeviceId.value } } : {}),
         },
       });
+      refreshDevices(); // labels are only available after permission is granted
 
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       sourceNode = audioCtx.createMediaStreamSource(mediaStream);
@@ -130,5 +173,16 @@ export function usePitchDetector() {
     note.value = null;
   }
 
-  return { isListening, error, frequency, note, algorithm, noiseGate, start, stop };
+  return {
+    isListening,
+    error,
+    frequency,
+    note,
+    algorithm,
+    noiseGate,
+    inputDevices,
+    selectedDeviceId,
+    start,
+    stop,
+  };
 }
