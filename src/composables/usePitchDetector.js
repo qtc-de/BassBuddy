@@ -97,6 +97,22 @@ export function usePitchDetector() {
     }
   });
 
+  // Cheap ADCs (phone mics, low-cost interfaces like a Rocksmith cable)
+  // often add a small DC bias to the signal. Left in, that bias gets
+  // amplified right along with the real signal by applyGain (wasting
+  // headroom / pushing toward clipping), and — worse — leaks into the
+  // pitch detector's low-frequency analysis (YIN's subharmonic check
+  // measures energy at half the detected frequency; DC leaks several
+  // times stronger into that lower bin than into the true one), which can
+  // make it mistake a plain DC bias for evidence of a weak fundamental an
+  // octave down and "correct" a note to half its real frequency.
+  function removeDcOffset(buf) {
+    let sum = 0;
+    for (let i = 0; i < buf.length; i++) sum += buf[i];
+    const mean = sum / buf.length;
+    for (let i = 0; i < buf.length; i++) buf[i] -= mean;
+  }
+
   function applyGain(buf, factor) {
     if (factor === 1) return;
     for (let i = 0; i < buf.length; i++) {
@@ -107,6 +123,7 @@ export function usePitchDetector() {
 
   function tick() {
     analyser.getFloatTimeDomainData(buffer);
+    removeDcOffset(buffer);
     applyGain(buffer, gain.value);
     const freq = detect_pitch(algorithm.value, buffer, audioCtx.sampleRate, noiseGate.value);
     const now = performance.now();
