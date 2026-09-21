@@ -24,6 +24,37 @@ function getContext() {
   return audioCtx;
 }
 
+// "Play what you hear" exercises auto-play (a watcher schedules the first
+// playback via setTimeout, and each subsequent exercise in a set can
+// auto-advance without a fresh tap) — not from a direct click. Mobile
+// browsers only allow an AudioContext to actually produce sound if it was
+// resumed synchronously inside a real user gesture; a context resumed from
+// a timer stays silently suspended. So resume (and, for older iOS/Safari,
+// play one silent buffer) on the very first tap/keypress anywhere on the
+// page, once, so the context is already running by the time auto-play
+// tries to use it.
+function unlockOnFirstGesture() {
+  const ctx = getContext();
+  if (ctx.state === 'suspended') ctx.resume();
+  const silence = ctx.createBuffer(1, 1, ctx.sampleRate);
+  const source = ctx.createBufferSource();
+  source.buffer = silence;
+  source.connect(ctx.destination);
+  source.start(0);
+}
+
+if (typeof document !== 'undefined') {
+  const onFirstGesture = () => {
+    unlockOnFirstGesture();
+    document.removeEventListener('pointerdown', onFirstGesture);
+    document.removeEventListener('touchend', onFirstGesture);
+    document.removeEventListener('keydown', onFirstGesture);
+  };
+  document.addEventListener('pointerdown', onFirstGesture, { passive: true });
+  document.addEventListener('touchend', onFirstGesture, { passive: true });
+  document.addEventListener('keydown', onFirstGesture);
+}
+
 function loadBuffer(ctx, stringName) {
   if (!bufferPromises[stringName]) {
     bufferPromises[stringName] = (async () => {
@@ -71,21 +102,31 @@ function scheduleNote(ctx, buffer, fret, startTime) {
 export async function playNotes(names) {
   if (!names || names.length === 0) return;
 
-  const ctx = getContext();
-  if (ctx.state === 'suspended') {
-    await ctx.resume();
+  try {
+    const ctx = getContext();
+    if (ctx.state === 'suspended') {
+      await ctx.resume();
+    }
+    if (ctx.state !== 'running') {
+      // Autoplay was blocked (no user gesture has unlocked audio yet) —
+      // scheduling notes now would just silently produce no sound.
+      console.warn('BassBuddy: audio context not running (state:', ctx.state, ') — skipping playback.');
+      return;
+    }
+
+    const positions = names.map(bestPosition);
+    const buffers = await Promise.all(
+      positions.map((p) => loadBuffer(ctx, BASS_STRINGS[p.stringIndex].name))
+    );
+
+    const startTime = ctx.currentTime + SCHEDULE_LEAD;
+    positions.forEach((p, i) => {
+      scheduleNote(ctx, buffers[i], p.fret, startTime + i * (PLAY_DURATION + NOTE_GAP));
+    });
+
+    const totalMs = (SCHEDULE_LEAD + names.length * (PLAY_DURATION + NOTE_GAP)) * 1000;
+    await new Promise((resolve) => setTimeout(resolve, totalMs));
+  } catch (err) {
+    console.error('BassBuddy: failed to play recorded notes:', err);
   }
-
-  const positions = names.map(bestPosition);
-  const buffers = await Promise.all(
-    positions.map((p) => loadBuffer(ctx, BASS_STRINGS[p.stringIndex].name))
-  );
-
-  const startTime = ctx.currentTime + SCHEDULE_LEAD;
-  positions.forEach((p, i) => {
-    scheduleNote(ctx, buffers[i], p.fret, startTime + i * (PLAY_DURATION + NOTE_GAP));
-  });
-
-  const totalMs = (SCHEDULE_LEAD + names.length * (PLAY_DURATION + NOTE_GAP)) * 1000;
-  await new Promise((resolve) => setTimeout(resolve, totalMs));
 }
