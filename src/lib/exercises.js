@@ -19,6 +19,14 @@ function normalizeNote(raw, context) {
   return sharp;
 }
 
+function parsePositiveInt(value, context, key) {
+  if (value == null) return null;
+  if (!Number.isInteger(value) || value <= 0) {
+    throw new Error(`${context}: "${key}" must be a positive integer`);
+  }
+  return value;
+}
+
 function normalizeFretboard(spec, context) {
   if (spec == null) return null;
   if (Array.isArray(spec.frets)) {
@@ -57,6 +65,15 @@ function normalizeFretboard(spec, context) {
  * zone indefinitely with genuine variation, instead of needing several
  * pre-written exercises with different fixed note lists for variety.
  *
+ * An exercise can also use `success_on: N` and/or `failure_on: N` in place
+ * of a fixed sequence: the player plays freely from the `notes` pool (any
+ * order, any number of repeats — this replaces the ordered/remainingCounts
+ * scoring entirely), scoring a success point for every note that's in the
+ * pool and a failure point for every note that isn't, and the exercise
+ * ends the instant either count reaches its target (whichever is hit
+ * first, if both are set). Presence of either key puts the exercise in
+ * this "scoring" mode regardless of its own `ordered` value.
+ *
  * Returns { sourceName, name, ordered, folder: null, exercises: [...] }.
  * `name` is the set's own display name (`bassbuddy.name`), falling back to
  * `sourceName` (the file name) when omitted. `folder` is always null here —
@@ -84,6 +101,8 @@ export function parseExerciseYaml(text, sourceName = 'exercise') {
     if (!raw || (!hasFixedNotes && !randomCount)) {
       throw new Error(`${context}: needs a non-empty "notes" list or a positive "randomNotes" count`);
     }
+    const successOn = parsePositiveInt(raw.success_on, context, 'success_on');
+    const failureOn = parsePositiveInt(raw.failure_on, context, 'failure_on');
     // With randomNotes set, `notes` (if given) is the pool to draw from
     // rather than a fixed sequence; the actual per-attempt sequence is
     // generated at runtime (see useExercises.js).
@@ -94,6 +113,8 @@ export function parseExerciseYaml(text, sourceName = 'exercise') {
       ordered: raw.ordered !== false,
       mode: raw.mode === 'hear' ? 'hear' : 'see',
       randomCount,
+      successOn,
+      failureOn,
       notes,
       fretboard: normalizeFretboard(raw.fretboard, context),
     };

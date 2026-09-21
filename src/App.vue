@@ -96,9 +96,19 @@ function restartSet() {
   }
 }
 
+function isScoringMode(exercise) {
+  return exercise != null && (exercise.successOn != null || exercise.failureOn != null);
+}
+
 const progressText = computed(() => {
   const exercise = exercises.currentExercise.value;
   if (!exercise) return '';
+  if (isScoringMode(exercise)) {
+    const parts = [];
+    if (exercise.successOn != null) parts.push(`${exercises.successCount.value} / ${exercise.successOn} correct`);
+    if (exercise.failureOn != null) parts.push(`${exercises.failureCount.value} / ${exercise.failureOn} mistakes`);
+    return parts.join(' · ');
+  }
   const total = exercise.notes.length;
   const done = exercise.ordered
     ? exercises.sequenceIndex.value
@@ -108,7 +118,8 @@ const progressText = computed(() => {
 
 const nextNoteHint = computed(() => {
   const exercise = exercises.currentExercise.value;
-  if (!exercise || !exercise.ordered || exercise.mode === 'hear' || exercises.isComplete.value) return '';
+  if (!exercise || isScoringMode(exercise) || !exercise.ordered || exercise.mode === 'hear' || exercises.isComplete.value)
+    return '';
   return exercise.notes[exercises.sequenceIndex.value];
 });
 
@@ -261,14 +272,16 @@ function toggleListening() {
       </p>
       <p class="exercise-name">
         {{ exercises.currentExercise.value.name }}
-        <span v-if="exercises.isComplete.value" class="check-icon">✓</span>
+        <span v-if="exercises.isComplete.value" class="check-icon" :class="{ 'fail-icon': exercises.completionOutcome.value === 'failure' }">
+          {{ exercises.completionOutcome.value === 'failure' ? '✗' : '✓' }}
+        </span>
       </p>
       <p v-if="exercises.currentExercise.value.description" class="exercise-description">
         {{ exercises.currentExercise.value.description }}
       </p>
       <p class="exercise-meta">
-        {{ exercises.currentExercise.value.ordered ? 'Play in order' : 'Play in any order' }}
-        · Progress: {{ progressText }}
+        {{ isScoringMode(exercises.currentExercise.value) ? 'Free play' : (exercises.currentExercise.value.ordered ? 'Play in order' : 'Play in any order') }}
+        · {{ isScoringMode(exercises.currentExercise.value) ? '' : 'Progress: ' }}{{ progressText }}
         <span v-if="exercises.currentExercise.value.mode === 'hear'">· Play what you hear</span>
         <span v-if="nextNoteHint">· Next: {{ nextNoteHint }}</span>
       </p>
@@ -603,6 +616,11 @@ h1 {
   font-size: 0.7rem;
   font-weight: 700;
   vertical-align: middle;
+}
+
+.check-icon.fail-icon {
+  background: #e05252;
+  color: #2a0a0a;
 }
 
 .mic-button {

@@ -106,7 +106,17 @@ export function useExercises() {
   const sequenceIndex = ref(0);
   const remainingCounts = ref(new Map());
   const isComplete = ref(false);
+  const completionOutcome = ref(null); // 'success' | 'failure' | null, only meaningful once isComplete
+  const successCount = ref(0);
+  const failureCount = ref(0);
   let wrongMarkerSeq = 0;
+
+  /** success_on/failure_on exercises are freeform: any note in the pool
+   *  scores, any number of times, instead of the ordered/remainingCounts
+   *  logic that requires each note exactly once (in or out of sequence). */
+  function isScoringMode(exercise) {
+    return exercise != null && (exercise.successOn != null || exercise.failureOn != null);
+  }
 
   function clearAdvanceTimeout() {
     if (advanceTimeoutId != null) {
@@ -124,6 +134,9 @@ export function useExercises() {
     wrongMarkers.value = [];
     sequenceIndex.value = 0;
     isComplete.value = false;
+    completionOutcome.value = null;
+    successCount.value = 0;
+    failureCount.value = 0;
     const counts = new Map();
     if (currentExercise.value) {
       for (const n of currentExercise.value.notes) {
@@ -212,7 +225,24 @@ export function useExercises() {
     if (!exercise || isComplete.value || !noteInfo) return;
 
     let justCompleted = false;
-    if (exercise.ordered) {
+    if (isScoringMode(exercise)) {
+      const pool = new Set(exercise.notes);
+      if (pool.has(noteInfo.name)) {
+        markCorrect(noteInfo.midi, noteInfo.name);
+        successCount.value += 1;
+      } else {
+        markWrong(noteInfo.midi, noteInfo.name);
+        failureCount.value += 1;
+      }
+
+      if (exercise.successOn != null && successCount.value >= exercise.successOn) {
+        justCompleted = true;
+        completionOutcome.value = 'success';
+      } else if (exercise.failureOn != null && failureCount.value >= exercise.failureOn) {
+        justCompleted = true;
+        completionOutcome.value = 'failure';
+      }
+    } else if (exercise.ordered) {
       const expected = exercise.notes[sequenceIndex.value];
       if (noteInfo.name === expected) {
         markCorrect(noteInfo.midi, noteInfo.name);
@@ -280,6 +310,9 @@ export function useExercises() {
     sequenceIndex,
     remainingCounts,
     isComplete,
+    completionOutcome,
+    successCount,
+    failureCount,
     uploadError,
     loadAll,
     importFile,
