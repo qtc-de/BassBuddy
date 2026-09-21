@@ -51,20 +51,6 @@ export function noteNameAtFret(stringIndex, fret) {
 }
 
 /**
- * Picks a single reference frequency for a bare pitch class (e.g. "C#"),
- * for exercise audio playback where no specific string/fret is implied.
- * Lands in the lowest octave of the bass's open-string register (E1..D#2)
- * so it sounds like a plausible bass note regardless of pitch class.
- */
-export function canonicalFreqForPitchClass(name) {
-  const targetIndex = NOTE_NAMES.indexOf(name);
-  const lowestOpenMidi = Math.round(freqToMidi(BASS_STRINGS[BASS_STRINGS.length - 1].freq)); // low E string
-  const base = lowestOpenMidi % 12;
-  const midi = lowestOpenMidi + ((targetIndex - base + 12) % 12);
-  return midiToFreq(midi);
-}
-
-/**
  * Finds every (string, fret) position on the bass neck that plays the given
  * MIDI note, within FRET_COUNT frets of the nut.
  */

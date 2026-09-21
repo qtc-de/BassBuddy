@@ -11,8 +11,7 @@ import {
 import { useExercises } from './composables/useExercises.js';
 import { useSettings } from './composables/useSettings.js';
 import { ALGORITHMS } from './lib/algorithms.js';
-import { canonicalFreqForPitchClass } from './lib/notes.js';
-import { playFrequencies } from './lib/synth.js';
+import { playNotes } from './lib/samples.js';
 
 const {
   isListening,
@@ -63,7 +62,7 @@ function selectSet(index) {
 function replayCurrentSequence() {
   const exercise = exercises.currentExercise.value;
   if (!exercise) return;
-  playFrequencies(exercise.notes.map(canonicalFreqForPitchClass));
+  playNotes(exercise.notes);
 }
 
 function isHearMode(exercise) {
