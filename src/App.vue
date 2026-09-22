@@ -215,7 +215,7 @@ function toggleListening() {
           <div class="picker-backdrop" @click="pickerOpen = false" />
           <div class="picker-panel">
             <button
-              class="picker-item"
+              class="picker-item picker-item-freeplay"
               :class="{ active: exercises.selectedSetIndex.value == null }"
               @click="selectSet(null)"
             >
@@ -419,8 +419,32 @@ h1 {
   text-align: left;
 }
 
-.picker-group + .picker-group {
-  margin-top: 0.5rem;
+/* On screens wide enough to spare the room, let the picker grow and lay
+   its folders out as side-by-side columns instead of one long vertical
+   list — CSS multi-column so the number of columns adapts to whatever
+   width is available rather than a fixed breakpoint count. */
+@media (min-width: 640px) {
+  .picker-panel {
+    /* width: max-content (below) shrink-wraps to content and never lets a
+       multi-column layout actually spread out, since a browser's
+       max-content size for a columned box is just one column wide — so
+       give it a real width here instead of relying on the base rule. */
+    width: min(92vw, 64rem);
+    max-width: min(92vw, 64rem);
+    max-height: 32rem;
+    column-width: 16rem;
+    column-gap: 1rem;
+  }
+
+  .picker-item-freeplay {
+    column-span: all;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.picker-group {
+  break-inside: avoid-column;
+  margin-bottom: 0.5rem;
 }
 
 .picker-group-label {
