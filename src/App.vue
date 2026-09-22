@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import Fretboard from './components/Fretboard.vue';
 import {
   usePitchDetector,
@@ -49,8 +49,45 @@ function onExerciseFileChange(event) {
 }
 
 const pickerOpen = ref(false);
+const pickerButtonRef = ref(null);
+const pickerPanelRef = ref(null);
+const pickerPanelStyle = ref({});
 
 const selectedSetLabel = computed(() => exercises.currentSet.value?.name ?? 'Free Play');
+
+// The panel's on-screen position can't be pinned with plain CSS: the app
+// is a centered column, so the button isn't reliably near either edge —
+// centering the panel on the button overflows the left edge when the
+// button sits near the left, and anchoring to the button's left edge
+// overflows the right edge whenever the panel is wider than the space
+// remaining to the right of the button (e.g. tablet widths, where the
+// multi-column layout makes the panel quite wide). So measure both the
+// button and the (already-rendered, off-screen-safe) panel after it
+// opens, and clamp its position to stay fully inside the viewport.
+const PICKER_MARGIN = 12; // px gap kept from the viewport edge
+
+function positionPickerPanel() {
+  const btn = pickerButtonRef.value;
+  const panel = pickerPanelRef.value;
+  if (!btn || !panel) return;
+  const btnRect = btn.getBoundingClientRect();
+  const panelRect = panel.getBoundingClientRect();
+  const maxLeft = window.innerWidth - panelRect.width - PICKER_MARGIN;
+  const left = Math.max(PICKER_MARGIN, Math.min(btnRect.left, maxLeft));
+  const top = btnRect.bottom + 8;
+  pickerPanelStyle.value = { left: `${left}px`, top: `${top}px` };
+}
+
+watch(pickerOpen, (open) => {
+  if (open) {
+    nextTick(positionPickerPanel);
+    window.addEventListener('resize', positionPickerPanel);
+  } else {
+    window.removeEventListener('resize', positionPickerPanel);
+  }
+});
+
+onUnmounted(() => window.removeEventListener('resize', positionPickerPanel));
 
 function togglePicker() {
   unlockAudio(); // opening the picker is likely the first real tap of the session
@@ -209,14 +246,14 @@ function toggleListening() {
 
     <div class="controls">
       <div class="exercise-picker">
-        <button class="exercise-picker-button" @click="togglePicker">
+        <button ref="pickerButtonRef" class="exercise-picker-button" @click="togglePicker">
           <span>{{ selectedSetLabel }}</span>
           <span class="caret">▾</span>
         </button>
 
         <template v-if="pickerOpen">
           <div class="picker-backdrop" @click="pickerOpen = false" />
-          <div class="picker-panel">
+          <div ref="pickerPanelRef" class="picker-panel" :style="pickerPanelStyle">
             <button
               class="picker-item picker-item-freeplay"
               :class="{ active: exercises.selectedSetIndex.value == null }"
@@ -404,10 +441,12 @@ h1 {
 }
 
 .picker-panel {
-  position: absolute;
-  top: calc(100% + 0.4rem);
-  left: 50%;
-  transform: translateX(-50%);
+  /* position: fixed with left/top set inline by positionPickerPanel() in
+     the script — plain CSS (centered on the button, or anchored to its
+     left edge) can't stay on-screen in every case, since the app is a
+     centered column and the button's distance from either viewport edge
+     varies with screen width. See positionPickerPanel's comment. */
+  position: fixed;
   z-index: 21;
   width: max-content;
   min-width: 16rem;
@@ -424,29 +463,34 @@ h1 {
 
 /* On screens wide enough to spare the room, let the picker grow and lay
    its folders out as side-by-side columns instead of one long vertical
-   list — CSS multi-column so the number of columns adapts to whatever
-   width is available rather than a fixed breakpoint count. */
+   list. CSS Grid, not multi-column: a height-constrained multicol
+   container (column-width + our max-height/overflow-y below) pushes
+   overflow into *extra columns going sideways* instead of scrolling — the
+   opposite of what we want. Grid keeps the column count fixed to what
+   actually fits the container's width and just adds rows (taller, not
+   wider) when content overflows, so overflow-y's vertical scrollbar is
+   the one that ever kicks in. */
 @media (min-width: 640px) {
   .picker-panel {
-    /* width: max-content (below) shrink-wraps to content and never lets a
-       multi-column layout actually spread out, since a browser's
-       max-content size for a columned box is just one column wide — so
-       give it a real width here instead of relying on the base rule. */
+    /* width: max-content (below) shrink-wraps to content, which would
+       otherwise cap this at a single grid column — give it a real width
+       here so the grid actually has room to lay out multiple columns. */
     width: min(92vw, 64rem);
     max-width: min(92vw, 64rem);
     max-height: 32rem;
-    column-width: 16rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    align-content: start;
     column-gap: 1rem;
   }
 
-  .picker-item-freeplay {
-    column-span: all;
-    margin-bottom: 0.5rem;
+  .picker-item-freeplay,
+  .picker-empty {
+    grid-column: 1 / -1;
   }
 }
 
 .picker-group {
-  break-inside: avoid-column;
   margin-bottom: 0.5rem;
 }
 
