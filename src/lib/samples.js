@@ -1,4 +1,10 @@
+import { ref } from 'vue';
 import { BASS_STRINGS, findFretPositionsForPitchClass } from './notes.js';
+
+// Surfaces what's happening with playback directly in the UI (see App.vue)
+// — mobile Safari gives no console access without a Mac + cable, so a
+// silent failure there is otherwise completely invisible to the player.
+export const audioDiagnostic = ref('');
 
 // Real recorded bass notes for "play what you hear" exercises, replacing
 // the old oscillator synth. Each public/<String> String.m4a file is one
@@ -33,19 +39,30 @@ function getContext() {
 // play one silent buffer) on the very first tap/keypress anywhere on the
 // page, once, so the context is already running by the time auto-play
 // tries to use it.
-function unlockOnFirstGesture() {
-  const ctx = getContext();
-  if (ctx.state === 'suspended') ctx.resume();
-  const silence = ctx.createBuffer(1, 1, ctx.sampleRate);
-  const source = ctx.createBufferSource();
-  source.buffer = silence;
-  source.connect(ctx.destination);
-  source.start(0);
+// Exported so call sites can invoke it directly inside their own click/tap
+// handlers (belt-and-suspenders alongside the document-level listener
+// below) — some iOS Safari versions are picky about a bubbled listener
+// counting as "the" user gesture, so the buttons that actually kick off
+// playback (Start Listening, the exercise picker, Replay) call this
+// synchronously as the first thing they do too.
+export function unlockAudio() {
+  try {
+    const ctx = getContext();
+    if (ctx.state === 'suspended') ctx.resume();
+    const silence = ctx.createBuffer(1, 1, ctx.sampleRate);
+    const source = ctx.createBufferSource();
+    source.buffer = silence;
+    source.connect(ctx.destination);
+    source.start(0);
+    audioDiagnostic.value = `audio unlock attempted (context state: ${ctx.state})`;
+  } catch (err) {
+    audioDiagnostic.value = `audio unlock failed: ${err.message}`;
+  }
 }
 
 if (typeof document !== 'undefined') {
   const onFirstGesture = () => {
-    unlockOnFirstGesture();
+    unlockAudio();
     document.removeEventListener('pointerdown', onFirstGesture);
     document.removeEventListener('touchend', onFirstGesture);
     document.removeEventListener('keydown', onFirstGesture);
@@ -110,7 +127,9 @@ export async function playNotes(names) {
     if (ctx.state !== 'running') {
       // Autoplay was blocked (no user gesture has unlocked audio yet) —
       // scheduling notes now would just silently produce no sound.
-      console.warn('BassBuddy: audio context not running (state:', ctx.state, ') — skipping playback.');
+      const msg = `audio blocked — context state is "${ctx.state}" instead of "running"`;
+      console.warn('BassBuddy:', msg);
+      audioDiagnostic.value = msg;
       return;
     }
 
@@ -124,9 +143,12 @@ export async function playNotes(names) {
       scheduleNote(ctx, buffers[i], p.fret, startTime + i * (PLAY_DURATION + NOTE_GAP));
     });
 
+    audioDiagnostic.value = '';
     const totalMs = (SCHEDULE_LEAD + names.length * (PLAY_DURATION + NOTE_GAP)) * 1000;
     await new Promise((resolve) => setTimeout(resolve, totalMs));
   } catch (err) {
-    console.error('BassBuddy: failed to play recorded notes:', err);
+    const msg = `playback failed: ${err.message}`;
+    console.error('BassBuddy:', msg, err);
+    audioDiagnostic.value = msg;
   }
 }

@@ -11,7 +11,7 @@ import {
 import { useExercises } from './composables/useExercises.js';
 import { useSettings } from './composables/useSettings.js';
 import { ALGORITHMS } from './lib/algorithms.js';
-import { playNotes } from './lib/samples.js';
+import { playNotes, unlockAudio, audioDiagnostic } from './lib/samples.js';
 
 const {
   isListening,
@@ -52,7 +52,13 @@ const pickerOpen = ref(false);
 
 const selectedSetLabel = computed(() => exercises.currentSet.value?.name ?? 'Free Play');
 
+function togglePicker() {
+  unlockAudio(); // opening the picker is likely the first real tap of the session
+  pickerOpen.value = !pickerOpen.value;
+}
+
 function selectSet(index) {
+  unlockAudio();
   exercises.startSet(index);
   pickerOpen.value = false;
 }
@@ -60,6 +66,7 @@ function selectSet(index) {
 // "Play what you hear" exercises: synthesize the exercise's notes as audio
 // instead of showing them, so the player has to recall/find them by ear.
 function replayCurrentSequence() {
+  unlockAudio();
   const exercise = exercises.currentExercise.value;
   if (!exercise) return;
   playNotes(exercise.notes);
@@ -131,6 +138,7 @@ const needleStyle = computed(() => ({
 }));
 
 function toggleListening() {
+  unlockAudio();
   if (isListening.value) {
     stop();
   } else {
@@ -198,7 +206,7 @@ function toggleListening() {
 
     <div class="controls">
       <div class="exercise-picker">
-        <button class="exercise-picker-button" @click="pickerOpen = !pickerOpen">
+        <button class="exercise-picker-button" @click="togglePicker">
           <span>{{ selectedSetLabel }}</span>
           <span class="caret">▾</span>
         </button>
@@ -242,6 +250,7 @@ function toggleListening() {
     </div>
 
     <p v-if="exercises.uploadError.value" class="error">{{ exercises.uploadError.value }}</p>
+    <p v-if="audioDiagnostic" class="error">Audio: {{ audioDiagnostic }}</p>
 
     <section v-if="exercises.setComplete.value" class="exercise-panel">
       <div class="panel-icons">
