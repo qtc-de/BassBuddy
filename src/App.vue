@@ -11,7 +11,7 @@ import {
 import { useExercises } from './composables/useExercises.js';
 import { useSettings } from './composables/useSettings.js';
 import { ALGORITHMS } from './lib/algorithms.js';
-import { playNotes, unlockAudio, audioDiagnostic } from './lib/samples.js';
+import { playNotes, unlockAudio, playbackError } from './lib/samples.js';
 
 const {
   isListening,
@@ -65,11 +65,14 @@ function selectSet(index) {
 
 // "Play what you hear" exercises: synthesize the exercise's notes as audio
 // instead of showing them, so the player has to recall/find them by ear.
-function replayCurrentSequence() {
+// `manual` is true only for the ▶ button's own click — a failure there
+// surfaces an on-screen error, but the same silent-autoplay-block failure
+// on exercise start/restart (an unattended setTimeout, not a tap) doesn't.
+function replayCurrentSequence(manual = false) {
   unlockAudio();
   const exercise = exercises.currentExercise.value;
   if (!exercise) return;
-  playNotes(exercise.notes);
+  playNotes(exercise.notes, { manual });
 }
 
 function isHearMode(exercise) {
@@ -250,7 +253,7 @@ function toggleListening() {
     </div>
 
     <p v-if="exercises.uploadError.value" class="error">{{ exercises.uploadError.value }}</p>
-    <p v-if="audioDiagnostic" class="error">Audio: {{ audioDiagnostic }}</p>
+    <p v-if="playbackError" class="error">{{ playbackError }}</p>
 
     <section v-if="exercises.setComplete.value" class="exercise-panel">
       <div class="panel-icons">
@@ -269,7 +272,7 @@ function toggleListening() {
           v-if="exercises.currentExercise.value.mode === 'hear'"
           class="icon-button"
           title="Replay"
-          @click="replayCurrentSequence"
+          @click="replayCurrentSequence(true)"
         >
           ▶
         </button>

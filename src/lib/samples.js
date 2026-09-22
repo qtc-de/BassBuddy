@@ -1,10 +1,11 @@
 import { ref } from 'vue';
 import { BASS_STRINGS, findFretPositionsForPitchClass } from './notes.js';
 
-// Surfaces what's happening with playback directly in the UI (see App.vue)
-// — mobile Safari gives no console access without a Mac + cable, so a
-// silent failure there is otherwise completely invisible to the player.
-export const audioDiagnostic = ref('');
+// Only set by an explicit, manually-triggered playNotes(..., { manual: true })
+// call (the ▶ Replay button) — never by exercise auto-play, so a blocked
+// autoplay attempt on exercise start doesn't nag the player with an error
+// they didn't cause. Cleared on that same manual call's success.
+export const playbackError = ref('');
 
 // Real recorded bass notes for "play what you hear" exercises, replacing
 // the old oscillator synth. Each public/<String> String.m4a file is one
@@ -54,9 +55,8 @@ export function unlockAudio() {
     source.buffer = silence;
     source.connect(ctx.destination);
     source.start(0);
-    audioDiagnostic.value = `audio unlock attempted (context state: ${ctx.state})`;
   } catch (err) {
-    audioDiagnostic.value = `audio unlock failed: ${err.message}`;
+    console.error('BassBuddy: audio unlock failed:', err);
   }
 }
 
@@ -116,8 +116,9 @@ function scheduleNote(ctx, buffer, fret, startTime) {
  * the per-string takes. Returns a promise that resolves once playback
  * finishes.
  */
-export async function playNotes(names) {
+export async function playNotes(names, { manual = false } = {}) {
   if (!names || names.length === 0) return;
+  if (manual) playbackError.value = '';
 
   try {
     const ctx = getContext();
@@ -129,7 +130,7 @@ export async function playNotes(names) {
       // scheduling notes now would just silently produce no sound.
       const msg = `audio blocked — context state is "${ctx.state}" instead of "running"`;
       console.warn('BassBuddy:', msg);
-      audioDiagnostic.value = msg;
+      if (manual) playbackError.value = msg;
       return;
     }
 
@@ -143,12 +144,10 @@ export async function playNotes(names) {
       scheduleNote(ctx, buffers[i], p.fret, startTime + i * (PLAY_DURATION + NOTE_GAP));
     });
 
-    audioDiagnostic.value = '';
     const totalMs = (SCHEDULE_LEAD + names.length * (PLAY_DURATION + NOTE_GAP)) * 1000;
     await new Promise((resolve) => setTimeout(resolve, totalMs));
   } catch (err) {
-    const msg = `playback failed: ${err.message}`;
-    console.error('BassBuddy:', msg, err);
-    audioDiagnostic.value = msg;
+    console.error('BassBuddy: failed to play recorded notes:', err);
+    if (manual) playbackError.value = `playback failed: ${err.message}`;
   }
 }
