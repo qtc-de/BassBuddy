@@ -72,8 +72,14 @@ function positionPickerPanel() {
   if (!btn || !panel) return;
   const btnRect = btn.getBoundingClientRect();
   const panelRect = panel.getBoundingClientRect();
+  // Prefer centering the (usually much wider) panel on the button, rather
+  // than lining up their left edges — the latter looked lopsided, pinned
+  // to the right of the button instead of around it. Only fall back off
+  // that centered position when it would push either edge past the
+  // viewport.
   const maxLeft = window.innerWidth - panelRect.width - PICKER_MARGIN;
-  const left = Math.max(PICKER_MARGIN, Math.min(btnRect.left, maxLeft));
+  const centered = btnRect.left + btnRect.width / 2 - panelRect.width / 2;
+  const left = Math.max(PICKER_MARGIN, Math.min(centered, maxLeft));
   const top = btnRect.bottom + 8;
   pickerPanelStyle.value = { left: `${left}px`, top: `${top}px` };
 }
