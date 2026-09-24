@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { BASS_STRINGS, findFretPositionsForPitchClass } from './notes.js';
+import { BASS_STRINGS, findFretPositions, findFretPositionsForPitchClass, nameOctaveToMidi, parseNoteSpec } from './notes.js';
 
 // Only set by an explicit, manually-triggered playNotes(..., { manual: true })
 // call (the ▶ Replay button) — never by exercise auto-play, so a blocked
@@ -85,11 +85,22 @@ function loadBuffer(ctx, stringName) {
 }
 
 /**
- * Picks the cleanest recorded position for a pitch class: whichever
- * string plays it closest to the open string (lowest fret = cleanest
- * take in the recording, and away from the far end of the neck).
+ * Picks the cleanest recorded position for a note spec: whichever string
+ * plays it closest to the open string (lowest fret = cleanest take in the
+ * recording, and away from the far end of the neck) — restricted to the
+ * exact octave when the spec pins one down (e.g. "G2"), falling back to
+ * any octave if that exact one isn't within the recorded 0-15 fret range
+ * on any string.
  */
-function bestPosition(name) {
+function bestPosition(spec) {
+  const { name, octave } = parseNoteSpec(spec);
+  if (octave != null) {
+    const exact = findFretPositions(nameOctaveToMidi(name, octave));
+    if (exact.length > 0) {
+      return exact.reduce((best, p) => (p.fret < best.fret ? p : best), exact[0]);
+    }
+    console.warn(`BassBuddy: no recorded sample for "${spec}" (outside the 0-15 fret range) — using a different octave instead.`);
+  }
   const positions = findFretPositionsForPitchClass(name);
   return positions.reduce((best, p) => (p.fret < best.fret ? p : best), positions[0]);
 }
@@ -111,10 +122,10 @@ function scheduleNote(ctx, buffer, fret, startTime) {
 }
 
 /**
- * Plays a sequence of pitch classes (e.g. "C#") back-to-back for "play
- * what you hear" exercises, using real recorded bass notes sliced out of
- * the per-string takes. Returns a promise that resolves once playback
- * finishes.
+ * Plays a sequence of note specs (e.g. "C#", or "G2" for a specific
+ * octave) back-to-back for "play what you hear" exercises, using real
+ * recorded bass notes sliced out of the per-string takes. Returns a
+ * promise that resolves once playback finishes.
  */
 export async function playNotes(names, { manual = false } = {}) {
   if (!names || names.length === 0) return;

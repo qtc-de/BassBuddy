@@ -87,3 +87,32 @@ export function findFretPositionsForPitchClass(name) {
   });
   return positions;
 }
+
+/** Inverse of midiToNoteName: the MIDI number for a pitch class in a given octave. */
+export function nameOctaveToMidi(name, octave) {
+  return (octave + 1) * 12 + NOTE_NAMES.indexOf(name);
+}
+
+const NOTE_SPEC_RE = /^([A-G]#?)(-?\d+)?$/;
+
+/**
+ * Parses an exercise note spec (as normalized by exercises.js — already
+ * sharp, e.g. "C#", with an optional trailing octave digit, e.g. "G2")
+ * into its pitch class and octave (null if the spec didn't pin one down).
+ */
+export function parseNoteSpec(spec) {
+  const m = NOTE_SPEC_RE.exec(spec);
+  if (!m) return { name: spec, octave: null };
+  const [, name, octaveStr] = m;
+  return { name, octave: octaveStr != null ? Number(octaveStr) : null };
+}
+
+/**
+ * Whether a detected note (from analyzeFrequency: { name, octave, ... })
+ * satisfies a note spec — matching pitch class always, and matching the
+ * exact octave too when the spec pinned one down.
+ */
+export function noteSpecMatches(spec, noteInfo) {
+  const { name, octave } = parseNoteSpec(spec);
+  return noteInfo.name === name && (octave == null || noteInfo.octave === octave);
+}

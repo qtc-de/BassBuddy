@@ -6,7 +6,7 @@ import {
   parseExerciseYaml,
   UPLOADED_FOLDER,
 } from '../lib/exercises.js';
-import { findFretPositions, findFretPositionsForPitchClass } from '../lib/notes.js';
+import { findFretPositions, findFretPositionsForPitchClass, noteSpecMatches, parseNoteSpec } from '../lib/notes.js';
 
 const WRONG_MARKER_TTL_MS = 700;
 const AUTO_ADVANCE_DELAY_MS = 2000; // time to see "exercise complete" before moving on
@@ -226,8 +226,8 @@ export function useExercises() {
 
     let justCompleted = false;
     if (isScoringMode(exercise)) {
-      const pool = new Set(exercise.notes);
-      if (pool.has(noteInfo.name)) {
+      const matched = exercise.notes.some((spec) => noteSpecMatches(spec, noteInfo));
+      if (matched) {
         markCorrect(noteInfo.midi, noteInfo.name);
         successCount.value += 1;
       } else {
@@ -244,7 +244,7 @@ export function useExercises() {
       }
     } else if (exercise.ordered) {
       const expected = exercise.notes[sequenceIndex.value];
-      if (noteInfo.name === expected) {
+      if (noteSpecMatches(expected, noteInfo)) {
         markCorrect(noteInfo.midi, noteInfo.name);
         sequenceIndex.value += 1;
         justCompleted = sequenceIndex.value >= exercise.notes.length;
@@ -252,10 +252,24 @@ export function useExercises() {
         markWrong(noteInfo.midi, noteInfo.name);
       }
     } else {
-      const remaining = remainingCounts.value.get(noteInfo.name) || 0;
-      if (remaining > 0) {
+      // Match by scanning remainingCounts's specs rather than a direct
+      // Map.get(noteInfo.name): a spec can pin an octave (e.g. "G2"),
+      // which noteInfo.name (pitch class only) can never equal directly.
+      // An octave-specific spec is the tighter match, so it's preferred
+      // over a same-pitch-class-any-octave spec when both would match.
+      let matchKey = null;
+      for (const [spec, count] of remainingCounts.value) {
+        if (count <= 0 || !noteSpecMatches(spec, noteInfo)) continue;
+        if (parseNoteSpec(spec).octave != null) {
+          matchKey = spec;
+          break;
+        }
+        if (matchKey == null) matchKey = spec;
+      }
+
+      if (matchKey != null) {
         const counts = new Map(remainingCounts.value);
-        counts.set(noteInfo.name, remaining - 1);
+        counts.set(matchKey, counts.get(matchKey) - 1);
         remainingCounts.value = counts;
         markCorrect(noteInfo.midi, noteInfo.name);
         justCompleted = [...counts.values()].every((c) => c === 0);

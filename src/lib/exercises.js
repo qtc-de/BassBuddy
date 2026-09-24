@@ -9,14 +9,24 @@ export const UPLOADED_FOLDER = 'Uploaded Exercises';
 
 const UPLOADED_STORAGE_KEY = 'bassbuddy:uploadedExercises';
 
+// A trailing (optionally negative) integer pins the note to one specific
+// octave (e.g. "G2"); without it, the pitch class part before it is
+// checked/normalized exactly as before and matches any octave.
+const NOTE_OCTAVE_RE = /^([A-Za-z][#bB]?)(-?\d+)?$/;
+
 function normalizeNote(raw, context) {
   const cleaned = String(raw).trim();
-  const combined = cleaned.charAt(0).toUpperCase() + cleaned.slice(1).toLowerCase();
+  const m = NOTE_OCTAVE_RE.exec(cleaned);
+  if (!m) {
+    throw new Error(`${context}: invalid note "${raw}"`);
+  }
+  const [, pitchPart, octavePart] = m;
+  const combined = pitchPart.charAt(0).toUpperCase() + pitchPart.slice(1).toLowerCase();
   const sharp = FLAT_TO_SHARP[combined] || combined;
   if (!VALID_NOTES.has(sharp)) {
     throw new Error(`${context}: invalid note "${raw}"`);
   }
-  return sharp;
+  return octavePart != null ? `${sharp}${octavePart}` : sharp;
 }
 
 function parsePositiveInt(value, context, key) {
@@ -64,6 +74,12 @@ function normalizeFretboard(spec, context) {
  * full chromatic scale otherwise. This lets one exercise cover a fretboard
  * zone indefinitely with genuine variation, instead of needing several
  * pre-written exercises with different fixed note lists for variety.
+ *
+ * Each entry in `notes` is a pitch class (e.g. "C#", "Db") by default,
+ * matched in any octave — append an integer octave (e.g. "G2") to require
+ * that exact octave instead; a bare pitch class still matches every
+ * octave. See notes.js's parseNoteSpec/noteSpecMatches for the matching
+ * logic used at runtime.
  *
  * An exercise can also use `success_on: N` and/or `failure_on: N` in place
  * of a fixed sequence: the player plays freely from the `notes` pool (any
