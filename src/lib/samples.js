@@ -84,23 +84,33 @@ function loadBuffer(ctx, stringName) {
   return bufferPromises[stringName];
 }
 
+// Bare pitch classes (no octave pinned in the spec) all play from this one
+// octave, rather than each independently picking "whichever string/fret is
+// closest to the nut" — that per-note approach let sequences jump between
+// octaves note to note (e.g. C from one octave, then D from another), since
+// the closest-to-nut position for different pitch classes doesn't sit in
+// the same octave. Octave 2 was picked because it's the only octave fully
+// covered by the recordings for every one of the 12 pitch classes within
+// fret 0-15 (C/C# via the A string, D through B via the D string) — no
+// note has to fall back to a different octave to be playable at all.
+const DEFAULT_OCTAVE = 2;
+
 /**
- * Picks the cleanest recorded position for a note spec: whichever string
- * plays it closest to the open string (lowest fret = cleanest take in the
- * recording, and away from the far end of the neck) — restricted to the
- * exact octave when the spec pins one down (e.g. "G2"), falling back to
- * any octave if that exact one isn't within the recorded 0-15 fret range
- * on any string.
+ * Picks the recorded position for a note spec: the exact octave when the
+ * spec pins one down (e.g. "G2"), otherwise DEFAULT_OCTAVE — whichever
+ * string plays that octave closest to the open string (lowest fret =
+ * cleanest take in the recording). Falls back to any octave, closest
+ * fret, only if the target octave isn't within the recorded 0-15 fret
+ * range on any string.
  */
 function bestPosition(spec) {
   const { name, octave } = parseNoteSpec(spec);
-  if (octave != null) {
-    const exact = findFretPositions(nameOctaveToMidi(name, octave));
-    if (exact.length > 0) {
-      return exact.reduce((best, p) => (p.fret < best.fret ? p : best), exact[0]);
-    }
-    console.warn(`BassBuddy: no recorded sample for "${spec}" (outside the 0-15 fret range) — using a different octave instead.`);
+  const targetOctave = octave != null ? octave : DEFAULT_OCTAVE;
+  const exact = findFretPositions(nameOctaveToMidi(name, targetOctave));
+  if (exact.length > 0) {
+    return exact.reduce((best, p) => (p.fret < best.fret ? p : best), exact[0]);
   }
+  console.warn(`BassBuddy: no recorded sample for "${spec}" in octave ${targetOctave} (outside the 0-15 fret range) — using a different octave instead.`);
   const positions = findFretPositionsForPitchClass(name);
   return positions.reduce((best, p) => (p.fret < best.fret ? p : best), positions[0]);
 }
