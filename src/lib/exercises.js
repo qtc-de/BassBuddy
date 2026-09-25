@@ -37,6 +37,14 @@ function parsePositiveInt(value, context, key) {
   return value;
 }
 
+function parseBoolean(value, context, key, defaultValue) {
+  if (value == null) return defaultValue;
+  if (typeof value !== 'boolean') {
+    throw new Error(`${context}: "${key}" must be true or false`);
+  }
+  return value;
+}
+
 function normalizeFretboard(spec, context) {
   if (spec == null) return null;
   if (Array.isArray(spec.frets)) {
@@ -90,6 +98,16 @@ function normalizeFretboard(spec, context) {
  * first, if both are set). Presence of either key puts the exercise in
  * this "scoring" mode regardless of its own `ordered` value.
  *
+ * In scoring mode, `accept_duplicates` (default true) controls whether a
+ * note that's already scored a success point can score another: true (the
+ * default) keeps the current unlimited-repeats behavior; false means only
+ * the first time a given pitch+octave is played counts — a *different*
+ * octave of an already-played pitch class still counts as a fresh point,
+ * but only if that octave is actually reachable within the exercise's
+ * fretboard window (its `fretboard` key, or the whole neck if unset). This
+ * is for forcing a player through every distinct playable position of a
+ * fretboard zone rather than letting them repeat one spot.
+ *
  * Returns { sourceName, name, ordered, folder: null, exercises: [...] }.
  * `name` is the set's own display name (`bassbuddy.name`), falling back to
  * `sourceName` (the file name) when omitted. `folder` is always null here —
@@ -119,6 +137,7 @@ export function parseExerciseYaml(text, sourceName = 'exercise') {
     }
     const successOn = parsePositiveInt(raw.success_on, context, 'success_on');
     const failureOn = parsePositiveInt(raw.failure_on, context, 'failure_on');
+    const acceptDuplicates = parseBoolean(raw.accept_duplicates, context, 'accept_duplicates', true);
     // With randomNotes set, `notes` (if given) is the pool to draw from
     // rather than a fixed sequence; the actual per-attempt sequence is
     // generated at runtime (see useExercises.js).
@@ -131,6 +150,7 @@ export function parseExerciseYaml(text, sourceName = 'exercise') {
       randomCount,
       successOn,
       failureOn,
+      acceptDuplicates,
       notes,
       fretboard: normalizeFretboard(raw.fretboard, context),
     };

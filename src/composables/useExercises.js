@@ -113,6 +113,7 @@ export function useExercises() {
   const failureCount = ref(0);
   let wrongMarkerSeq = 0;
   let repeatMarkerSeq = 0;
+  let scoredMidis = new Set(); // scoring-mode + accept_duplicates:false — MIDI notes already scored this attempt
 
   /** success_on/failure_on exercises are freeform: any note in the pool
    *  scores, any number of times, instead of the ordered/remainingCounts
@@ -141,6 +142,7 @@ export function useExercises() {
     completionOutcome.value = null;
     successCount.value = 0;
     failureCount.value = 0;
+    scoredMidis = new Set();
     const counts = new Map();
     if (currentExercise.value) {
       for (const n of currentExercise.value.notes) {
@@ -208,6 +210,18 @@ export function useExercises() {
     return frets == null ? anyOctave : anyOctave.filter((p) => frets.has(p.fret));
   }
 
+  // accept_duplicates:false — whether this exact MIDI note has a playable
+  // position within the exercise's fretboard window (or anywhere on the
+  // neck, if it doesn't restrict one). A different octave of an
+  // already-scored pitch class only counts as a fresh point when it's
+  // actually reachable here, not just theoretically the right pitch class.
+  function isAccessibleInRange(midi) {
+    const frets = activeFrets.value;
+    const positions = findFretPositions(midi);
+    if (positions.length === 0) return false;
+    return frets == null ? true : positions.some((p) => frets.has(p.fret));
+  }
+
   function markCorrect(midi, name) {
     const relevant = relevantPositions(midi, name);
     const next = new Set(correctPositions.value);
@@ -248,8 +262,19 @@ export function useExercises() {
     if (isScoringMode(exercise)) {
       const matched = exercise.notes.some((spec) => noteSpecMatches(spec, noteInfo));
       if (matched) {
-        markCorrect(noteInfo.midi, noteInfo.name);
-        successCount.value += 1;
+        // accept_duplicates:false — this exact pitch+octave only scores
+        // once; a different octave of the same pitch class still counts,
+        // but only when it's actually reachable in the exercise's
+        // fretboard window. Rejected either way: no point, but not a
+        // mistake either, since the pitch itself genuinely was correct.
+        const blocked =
+          exercise.acceptDuplicates === false &&
+          (scoredMidis.has(noteInfo.midi) || !isAccessibleInRange(noteInfo.midi));
+        if (!blocked) {
+          markCorrect(noteInfo.midi, noteInfo.name);
+          successCount.value += 1;
+          if (exercise.acceptDuplicates === false) scoredMidis.add(noteInfo.midi);
+        }
       } else {
         markWrong(noteInfo.midi, noteInfo.name);
         failureCount.value += 1;
