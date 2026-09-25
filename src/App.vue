@@ -347,6 +347,7 @@ function toggleListening() {
       :active-frets="exercises.activeFrets.value"
       :correct-positions="exercises.correctPositions.value"
       :wrong-positions="exercises.wrongMarkers.value"
+      :repeat-positions="exercises.repeatMarkers.value"
       :show-note-names="showNoteNames"
     />
 

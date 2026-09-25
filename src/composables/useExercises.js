@@ -9,6 +9,7 @@ import {
 import { findFretPositions, findFretPositionsForPitchClass, noteSpecMatches, parseNoteSpec } from '../lib/notes.js';
 
 const WRONG_MARKER_TTL_MS = 700;
+const REPEAT_MARKER_TTL_MS = 900;
 const AUTO_ADVANCE_DELAY_MS = 2000; // time to see "exercise complete" before moving on
 
 function shuffled(n) {
@@ -103,6 +104,7 @@ export function useExercises() {
   // Per-exercise progress state, rebuilt whenever the current exercise changes.
   const correctPositions = ref(new Set()); // "stringIndex-fret" keys, persist until exercise changes
   const wrongMarkers = ref([]); // [{ id, stringIndex, fret }] transient
+  const repeatMarkers = ref([]); // [{ id, stringIndex, fret }] transient — a correct note played again
   const sequenceIndex = ref(0);
   const remainingCounts = ref(new Map());
   const isComplete = ref(false);
@@ -110,6 +112,7 @@ export function useExercises() {
   const successCount = ref(0);
   const failureCount = ref(0);
   let wrongMarkerSeq = 0;
+  let repeatMarkerSeq = 0;
 
   /** success_on/failure_on exercises are freeform: any note in the pool
    *  scores, any number of times, instead of the ordered/remainingCounts
@@ -132,6 +135,7 @@ export function useExercises() {
     }
     correctPositions.value = new Set();
     wrongMarkers.value = [];
+    repeatMarkers.value = [];
     sequenceIndex.value = 0;
     isComplete.value = false;
     completionOutcome.value = null;
@@ -205,9 +209,25 @@ export function useExercises() {
   }
 
   function markCorrect(midi, name) {
+    const relevant = relevantPositions(midi, name);
     const next = new Set(correctPositions.value);
-    for (const p of relevantPositions(midi, name)) next.add(`${p.stringIndex}-${p.fret}`);
+    // A position already lit before this hit means the player replayed a
+    // note they'd already gotten correct (e.g. scoring-mode exercises,
+    // where a note can be hit any number of times) — flash it distinctly
+    // so that repeat actually registers visually, instead of the dot just
+    // staying the same steady green with no feedback at all.
+    const repeats = relevant.filter((p) => correctPositions.value.has(`${p.stringIndex}-${p.fret}`));
+    for (const p of relevant) next.add(`${p.stringIndex}-${p.fret}`);
     correctPositions.value = next;
+
+    if (repeats.length > 0) {
+      const id = ++repeatMarkerSeq;
+      const newMarkers = repeats.map((p) => ({ id, stringIndex: p.stringIndex, fret: p.fret }));
+      repeatMarkers.value = [...repeatMarkers.value, ...newMarkers];
+      setTimeout(() => {
+        repeatMarkers.value = repeatMarkers.value.filter((m) => m.id !== id);
+      }, REPEAT_MARKER_TTL_MS);
+    }
   }
 
   function markWrong(midi, name) {
@@ -321,6 +341,7 @@ export function useExercises() {
     activeFrets,
     correctPositions,
     wrongMarkers,
+    repeatMarkers,
     sequenceIndex,
     remainingCounts,
     isComplete,

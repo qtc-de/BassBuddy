@@ -7,6 +7,7 @@ const props = defineProps({
   activeFrets: { type: Set, default: null }, // null = whole neck relevant
   correctPositions: { type: Set, default: () => new Set() }, // "stringIndex-fret" keys
   wrongPositions: { type: Array, default: () => [] }, // [{ stringIndex, fret }]
+  repeatPositions: { type: Array, default: () => [] }, // [{ id, stringIndex, fret }], transient
   showNoteNames: { type: Boolean, default: false },
 });
 
@@ -30,6 +31,19 @@ const wrongSet = computed(() => new Set(props.wrongPositions.map((p) => `${p.str
 
 function isWrong(stringIndex, fret) {
   return wrongSet.value.has(`${stringIndex}-${fret}`);
+}
+
+// Keyed by id (not just position) so each new repeat at the same spot gets
+// a fresh DOM node — a mere class toggle wouldn't restart the CSS
+// animation if a second repeat lands before the first one's ring finishes.
+const repeatMap = computed(() => {
+  const m = new Map();
+  for (const marker of props.repeatPositions) m.set(`${marker.stringIndex}-${marker.fret}`, marker);
+  return m;
+});
+
+function repeatMarkerAt(stringIndex, fret) {
+  return repeatMap.value.get(`${stringIndex}-${fret}`) ?? null;
 }
 
 const frets = Array.from({ length: FRET_COUNT + 1 }, (_, i) => i);
@@ -57,6 +71,11 @@ const frets = Array.from({ length: FRET_COUNT + 1 }, (_, i) => i);
             <div class="string-line" />
             <div v-if="isCorrect(stringIndex, fret)" class="note-dot correct">
               {{ showNoteNames ? noteNameAtFret(stringIndex, fret) : '' }}
+              <div
+                v-if="repeatMarkerAt(stringIndex, fret)"
+                :key="repeatMarkerAt(stringIndex, fret).id"
+                class="repeat-ring"
+              />
             </div>
             <div v-else-if="isWrong(stringIndex, fret)" class="note-dot wrong">
               {{ showNoteNames ? noteNameAtFret(stringIndex, fret) : '' }}
@@ -199,6 +218,32 @@ const frets = Array.from({ length: FRET_COUNT + 1 }, (_, i) => i);
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+/* Brief bright ring around an already-correct dot when its note is
+   played again — the dot itself stays steady green, so without this a
+   repeat hit was registered (another success point, etc.) with no
+   visible feedback at all. */
+.repeat-ring {
+  position: absolute;
+  inset: -0.35rem;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  pointer-events: none;
+  animation: repeat-ring 0.9s ease-out forwards;
+}
+
+@keyframes repeat-ring {
+  from {
+    transform: scale(0.85);
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
   }
 }
 
