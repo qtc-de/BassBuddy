@@ -31,6 +31,16 @@ Open `http://localhost:8080`. Microphone access needs a secure context;
 another device requires HTTPS in front of it.
 
 
+### Excersises
+
+----
+
+The preconfigured excersises are only examples an will be improved over time.
+To write your own excersises please read the [excersise documentation](docs/excersises.md).
+
+You created a useful excersise? Feel free to contribute it to this repository :)
+
+
 ### Disclaimer
 
 ----
