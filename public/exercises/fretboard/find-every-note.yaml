@@ -1,0 +1,111 @@
+bassbuddy:
+  name: Find Every Note
+  ordered: false
+  exercises:
+    - name: Find every C
+      description: >-
+        Play every C on the neck — one point per octave of C you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 2
+      accept_duplicates: false
+      notes:
+        - C
+
+    - name: Find every C#
+      description: >-
+        Play every C# on the neck — one point per octave of C# you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 2
+      accept_duplicates: false
+      notes:
+        - C#
+
+    - name: Find every D
+      description: >-
+        Play every D on the neck — one point per octave of D you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 2
+      accept_duplicates: false
+      notes:
+        - D
+
+    - name: Find every D#
+      description: >-
+        Play every D# on the neck — one point per octave of D# you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 2
+      accept_duplicates: false
+      notes:
+        - D#
+
+    - name: Find every E
+      description: >-
+        Play every E on the neck — one point per octave of E you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 3
+      accept_duplicates: false
+      notes:
+        - E
+
+    - name: Find every F
+      description: >-
+        Play every F on the neck — one point per octave of F you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 3
+      accept_duplicates: false
+      notes:
+        - F
+
+    - name: Find every F#
+      description: >-
+        Play every F# on the neck — one point per octave of F# you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 3
+      accept_duplicates: false
+      notes:
+        - F#
+
+    - name: Find every G
+      description: >-
+        Play every G on the neck — one point per octave of G you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 3
+      accept_duplicates: false
+      notes:
+        - G
+
+    - name: Find every G#
+      description: >-
+        Play every G# on the neck — one point per octave of G# you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 3
+      accept_duplicates: false
+      notes:
+        - G#
+
+    - name: Find every A
+      description: >-
+        Play every A on the neck — one point per octave of A you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 3
+      accept_duplicates: false
+      notes:
+        - A
+
+    - name: Find every A#
+      description: >-
+        Play every A# on the neck — one point per octave of A# you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 3
+      accept_duplicates: false
+      notes:
+        - A#
+
+    - name: Find every B
+      description: >-
+        Play every B on the neck — one point per octave of B you find. Repeating a spot you already hit doesn't count again.
+      ordered: false
+      success_on: 2
+      accept_duplicates: false
+      notes:
+        - B

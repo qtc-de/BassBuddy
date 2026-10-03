@@ -1,6 +1,6 @@
 bassbuddy:
   name: G Major Arpeggios
-  ordered: true
+  ordered: false
   exercises:
     - name: Position 1 - I Arpeggio (G major)
       description: >-

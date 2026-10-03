@@ -1,6 +1,6 @@
 bassbuddy:
   name: A Minor Scale Positions
-  ordered: true
+  ordered: false
   exercises:
     - name: Position 1 - Scale Shape (root A)
       description: >-

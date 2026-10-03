@@ -1,5 +1,8 @@
 {
   "files": [
+    "fills/bass-fills.yaml",
+    "fretboard/find-every-note.yaml",
+    "fretboard/fretboard-zones.yaml",
     "scales/major-pentatonic/c-major-pentatonic-by-ear.yaml",
     "scales/major-pentatonic/c-major-pentatonic-positions.yaml",
     "scales/major-pentatonic/d-major-pentatonic-by-ear.yaml",
@@ -30,6 +33,8 @@
     "scales/minor/b-minor-positions.yaml",
     "scales/minor/e-minor-by-ear.yaml",
     "scales/minor/e-minor-positions.yaml",
-    "single-notes/fretboard-zones.yaml"
+    "shapes/dominant-7-arpeggios.yaml",
+    "technique/octave-shapes.yaml",
+    "technique/walking-bass.yaml"
   ]
 }

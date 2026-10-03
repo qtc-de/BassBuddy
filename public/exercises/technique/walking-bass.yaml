@@ -1,0 +1,83 @@
+bassbuddy:
+  name: Walking Bass Patterns
+  ordered: true
+  exercises:
+    - name: C Major Walk Up (1-3-5-6)
+      description: >-
+        Walking bass in C: root, third, fifth, sixth, climbing in the bass register.
+      fretboard:
+        start: 0
+        end: 9
+      ordered: true
+      notes:
+        - C2
+        - E2
+        - G2
+        - A2
+
+    - name: C Major Walk Down (6-5-3-1)
+      description: >-
+        Same chord tones coming back down the scale: 6-5-3-1.
+      fretboard:
+        start: 0
+        end: 9
+      ordered: true
+      notes:
+        - A2
+        - G2
+        - E2
+        - C2
+
+    - name: G Major Walk Up (1-3-5-6)
+      description: >-
+        Walking bass in G: root, third, fifth, sixth.
+      fretboard:
+        start: 0
+        end: 9
+      ordered: true
+      notes:
+        - G2
+        - B2
+        - D3
+        - E3
+
+    - name: D Major Walk Up (1-3-5-6)
+      description: >-
+        Walking bass in D: root, third, fifth, sixth.
+      fretboard:
+        start: 0
+        end: 9
+      ordered: true
+      notes:
+        - D2
+        - F#2
+        - A2
+        - B2
+
+    - name: Chromatic Approach into C
+      description: >-
+        Play 1-3-5, then approach the next root from a half step below: B2 is the chromatic approach into C3.
+      fretboard:
+        start: 0
+        end: 9
+      ordered: true
+      notes:
+        - G2
+        - B2
+        - D3
+        - B2
+        - C3
+
+    - name: Chromatic Approach into G
+      description: >-
+        Play 1-3-5, then approach the next root from a half step below: F#2 leads into G2.
+      fretboard:
+        start: 0
+        end: 9
+      ordered: true
+      notes:
+        - D2
+        - F#2
+        - A2
+        - F#2
+        - G2

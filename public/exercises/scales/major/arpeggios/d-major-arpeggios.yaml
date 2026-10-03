@@ -1,6 +1,6 @@
 bassbuddy:
   name: D Major Arpeggios
-  ordered: true
+  ordered: false
   exercises:
     - name: Position 1 - I Arpeggio (D major)
       description: >-

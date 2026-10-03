@@ -1,0 +1,279 @@
+bassbuddy:
+  name: Bass Fills
+  ordered: false
+  exercises:
+    - name: G Chromatic Run Up to the Fifth
+      description: >-
+        Walk every half step from the root up to the fifth. Hit each note cleanly — no gaps, no skips.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - G#2
+        - A2
+        - A#2
+        - B2
+        - C3
+        - C#3
+        - D3
+
+    - name: G Major Arpeggio Fill (1-3-5-8-5-3-1)
+      description: >-
+        Up the major triad to the octave and back down. Keep the rhythm even; this is the most common fill to land on the next chord change.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - B2
+        - D3
+        - G3
+        - D3
+        - B2
+        - G2
+
+    - name: G Minor Pentatonic Run
+      description: >-
+        The minor pentatonic run: root, b3, 4, 5, b7, octave. Works over almost any minor or blues progression.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - A#2
+        - C3
+        - D3
+        - F3
+        - G3
+
+    - name: G Blues Fill (1-b3-4-b5-5-b7-8)
+      description: >-
+        The blues fill with the flat fifth passing tone (b5) between the 4 and the 5. The classic sound of a turnaround.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - A#2
+        - C3
+        - C#3
+        - D3
+        - F3
+        - G3
+
+    - name: G Dominant Arpeggio Fill (1-3-5-b7-8)
+      description: >-
+        Dominant 7th arpeggio going up to the octave. Use it over a V chord or as a fill into the I.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - B2
+        - D3
+        - F3
+        - G3
+
+    - name: G Chromatic Descent into the Root
+      description: >-
+        Come down from the fifth to the root one half step at a time. A chromatic approach fill that lands on the next root.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - D3
+        - C#3
+        - C3
+        - B2
+        - A#2
+        - A2
+        - G#2
+        - G2
+
+    - name: G Octave Jump Fill (1-8-1-5-8)
+      description: >-
+        Jump between the root and its octave, touching the fifth in between. Big, open sound for rock and pop endings.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - G3
+        - D3
+        - G3
+        - G2
+
+    - name: G Passing Tone Fill (1-b3-3-4-5)
+      description: >-
+        Slide from the minor third through the major third to the fourth and fifth. The passing tones (b3 to 3, 4) make the line sound like it is resolving.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - A#2
+        - B2
+        - C3
+        - D3
+
+    - name: G Passing Tone Fill (5-b6-5-4-3-1)
+      description: >-
+        Lean on the flat sixth passing tone above the fifth, then walk down the chord tones to the root. A classic descending turnaround.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - D3
+        - D#3
+        - D3
+        - C3
+        - B2
+        - G2
+
+    - name: C Chromatic Run Up to the Fifth
+      description: >-
+        Walk every half step from the root up to the fifth. Hit each note cleanly — no gaps, no skips.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - C2
+        - C#2
+        - D2
+        - D#2
+        - E2
+        - F2
+        - F#2
+        - G2
+
+    - name: C Major Arpeggio Fill (1-3-5-8-5-3-1)
+      description: >-
+        Up the major triad to the octave and back down. Keep the rhythm even; this is the most common fill to land on the next chord change.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - C2
+        - E2
+        - G2
+        - C3
+        - G2
+        - E2
+        - C2
+
+    - name: C Minor Pentatonic Run
+      description: >-
+        The minor pentatonic run: root, b3, 4, 5, b7, octave. Works over almost any minor or blues progression.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - C2
+        - D#2
+        - F2
+        - G2
+        - A#2
+        - C3
+
+    - name: C Blues Fill (1-b3-4-b5-5-b7-8)
+      description: >-
+        The blues fill with the flat fifth passing tone (b5) between the 4 and the 5. The classic sound of a turnaround.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - C2
+        - D#2
+        - F2
+        - F#2
+        - G2
+        - A#2
+        - C3
+
+    - name: C Dominant Arpeggio Fill (1-3-5-b7-8)
+      description: >-
+        Dominant 7th arpeggio going up to the octave. Use it over a V chord or as a fill into the I.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - C2
+        - E2
+        - G2
+        - A#2
+        - C3
+
+    - name: C Chromatic Descent into the Root
+      description: >-
+        Come down from the fifth to the root one half step at a time. A chromatic approach fill that lands on the next root.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - F#2
+        - F2
+        - E2
+        - D#2
+        - D2
+        - C#2
+        - C2
+
+    - name: C Octave Jump Fill (1-8-1-5-8)
+      description: >-
+        Jump between the root and its octave, touching the fifth in between. Big, open sound for rock and pop endings.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - C2
+        - C3
+        - G2
+        - C3
+        - C2
+
+    - name: C Passing Tone Fill (1-b3-3-4-5)
+      description: >-
+        Slide from the minor third through the major third to the fourth and fifth. The passing tones (b3 to 3, 4) make the line sound like it is resolving.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - C2
+        - D#2
+        - E2
+        - F2
+        - G2
+
+    - name: C Passing Tone Fill (5-b6-5-4-3-1)
+      description: >-
+        Lean on the flat sixth passing tone above the fifth, then walk down the chord tones to the root. A classic descending turnaround.
+      fretboard:
+        start: 0
+        end: 12
+      ordered: true
+      notes:
+        - G2
+        - G#2
+        - G2
+        - F2
+        - E2
+        - C2

@@ -1,0 +1,112 @@
+bassbuddy:
+  name: Octave Shapes
+  ordered: true
+  exercises:
+    - name: E String Octave Shape (frets 0-5)
+      description: >-
+        Root on the open E string, octave two strings over on the D string, two frets up. Play root then octave, walking up chromatically.
+      fretboard:
+        start: 0
+        end: 7
+      ordered: true
+      notes:
+        - E1
+        - E2
+        - F1
+        - F2
+        - F#1
+        - F#2
+        - G1
+        - G2
+        - G#1
+        - G#2
+        - A1
+        - A2
+
+    - name: E String Octave Shape (frets 6-11)
+      description: >-
+        Same E-string-to-D-string octave shape, higher in the neck: root on the E string at frets 6-11, octave two frets up on the D string.
+      fretboard:
+        start: 6
+        end: 13
+      ordered: true
+      notes:
+        - A#1
+        - A#2
+        - B1
+        - B2
+        - C2
+        - C3
+        - C#2
+        - C#3
+        - D2
+        - D3
+        - D#2
+        - D#3
+
+    - name: A String Octave Shape (frets 0-5)
+      description: >-
+        Root on the A string, octave two strings over on the G string, two frets up. Play root then octave, walking up chromatically.
+      fretboard:
+        start: 0
+        end: 7
+      ordered: true
+      notes:
+        - A1
+        - A2
+        - A#1
+        - A#2
+        - B1
+        - B2
+        - C2
+        - C3
+        - C#2
+        - C#3
+        - D2
+        - D3
+
+    - name: A String Octave Shape (frets 6-11)
+      description: >-
+        Same A-string-to-G-string octave shape, higher in the neck: root on the A string at frets 6-11, octave two frets up on the G string.
+      fretboard:
+        start: 6
+        end: 13
+      ordered: true
+      notes:
+        - D#2
+        - D#3
+        - E2
+        - E3
+        - F2
+        - F3
+        - F#2
+        - F#3
+        - G2
+        - G3
+        - G#2
+        - G#3
+
+    - name: D String Octave Shape (frets 0-7)
+      description: >-
+        Root on the D string, octave on the neighbouring G string seven frets up. Play root then octave — the D-to-G octave is a different shape from the two-strings-over shapes above.
+      fretboard:
+        start: 0
+        end: 14
+      ordered: true
+      notes:
+        - D2
+        - D3
+        - D#2
+        - D#3
+        - E2
+        - E3
+        - F2
+        - F3
+        - F#2
+        - F#3
+        - G2
+        - G3
+        - G#2
+        - G#3
+        - A2
+        - A3

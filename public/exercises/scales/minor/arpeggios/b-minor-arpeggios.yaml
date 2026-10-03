@@ -1,6 +1,6 @@
 bassbuddy:
   name: B Minor Arpeggios
-  ordered: true
+  ordered: false
   exercises:
     - name: Position 1 - i Arpeggio (B minor)
       description: >-

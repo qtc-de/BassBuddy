@@ -1,6 +1,6 @@
 bassbuddy:
   name: C Major Arpeggios
-  ordered: true
+  ordered: false
   exercises:
     - name: Position 1 - I Arpeggio (C major)
       description: >-

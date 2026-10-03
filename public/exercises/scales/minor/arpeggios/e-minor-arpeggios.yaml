@@ -1,6 +1,6 @@
 bassbuddy:
   name: E Minor Arpeggios
-  ordered: true
+  ordered: false
   exercises:
     - name: Position 1 - i Arpeggio (E minor)
       description: >-

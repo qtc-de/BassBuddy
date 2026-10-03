@@ -1,6 +1,6 @@
 bassbuddy:
   name: E Minor Scale Positions
-  ordered: true
+  ordered: false
   exercises:
     - name: Position 1 - Scale Shape (root E)
       description: >-
